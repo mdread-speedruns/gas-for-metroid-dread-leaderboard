@@ -1,0 +1,23 @@
+{
+  "name": "gas-for-metroid-dread-leaderboard",
+  "version": "1.0.0",
+  "description": "gas project for metroid dread leaderboard",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ufodauge/gas-for-metroid-dread-leaderboard.git"
+  },
+  "author": "agdf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ufodauge/gas-for-metroid-dread-leaderboard/issues"
+  },
+  "homepage": "https://github.com/ufodauge/gas-for-metroid-dread-leaderboard#readme",
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.47",
+    "@types/node": "^17.0.39"
+  }
+}
