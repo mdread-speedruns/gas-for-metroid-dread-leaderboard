@@ -21,7 +21,9 @@ function updateCategoryConfigSRC(): void {
         // Any% (9kv83mjd)
         row.push(category.name + ' (' + category.id + ')');
 
-        const objectsCorrespondToId = dataVariables.data.filter(variable => variable.category === category.id);
+        const objectsCorrespondToId = dataVariables.data.filter(variable => {
+            return variable.category === category.id || variable.category === null
+        });
 
         for (let obj of objectsCorrespondToId) {
             for (let valuesId in obj.values.values) {
