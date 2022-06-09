@@ -62,6 +62,17 @@ function addNewRunner(data: string) {
 
         sheet.appendRow(newRow);
 
+        return {
+            status: 'success',
+            message: 'runner was added',
+            data: {
+                id: uuid,
+                name: name,
+                nameJp: nameJp,
+                mail: mail,
+                password: password
+            }
+        };
 
     } catch (error) {
         Logger.log(error)
