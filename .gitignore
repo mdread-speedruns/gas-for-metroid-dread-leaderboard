@@ -131,4 +131,7 @@ dist
 
 # others
 memo.md
+memo.html
 .clasp.json
+temp/
+*.py
