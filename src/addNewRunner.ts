@@ -12,13 +12,6 @@
  */
 function addNewRunner(data: string) {
     try {
-        interface Runner {
-            name: string,
-            nameJp: string | null,
-            mail: string,
-            password: string
-        }
-
         const jsonData: Runner = JSON.parse(data);
         const name: string = jsonData.name;
         const nameJp: string = jsonData.nameJp;
@@ -64,7 +57,7 @@ function addNewRunner(data: string) {
 
         return {
             status: 'success',
-            message: 'runner was added',
+            message: 'the runnner has been registered',
             data: {
                 id: uuid,
                 name: name,
