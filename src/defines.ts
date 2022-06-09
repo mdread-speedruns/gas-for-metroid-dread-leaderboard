@@ -17,4 +17,4 @@ const SRC_API_GAME = 'https://www.speedrun.com/api/v1/games?abbreviation=mdread&
 
 const SRC_MDREAD_CATEGORY_ID = '3dxkz0v1';
 
-const PASSWORD_STRETCHING_TIMES = 100000;
+const PASSWORD_STRETCHING_TIMES = 1000;

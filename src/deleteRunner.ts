@@ -17,7 +17,7 @@ function deleteRunner(id: string) {
         }
 
         const rowIndex = table.indexOf(row);
-        sheet.deleteRow(rowIndex + 1);
+        sheet.deleteRow(rowIndex + 2);
 
         return {
             status: 'success',
@@ -35,7 +35,7 @@ function deleteRunner(id: string) {
 
 
 function deleteRunnerTest() {
-    const id = '54229dad-21cc-4e1b-84f1-5f7f0a483827';
+    const id = '56747ae8-fed4-42fd-a30b-9fff8bb21d61';
     const result = deleteRunner(id);
     Logger.log(result);
 }
