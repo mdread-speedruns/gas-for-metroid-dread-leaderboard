@@ -6,6 +6,7 @@ const SHEET_ID_RECORD = '1xpOq-BRLotYqB1xFCJNh_WmsB2hqHdHG35CkytCc2wE';
 const SHEET_ID_UNVERIFIED_RECORD = '1d9fns88mJZanbB4ujnDXm-t7AID-v2aT9PoImCREbRY';
 const SHEET_ID_CATEGORY_CONFIGULATION = '13-i5MsNVe8V7KHpwlO6b07SmeJbpXppq4BwZJzH5F_g';
 const SHEET_ID_CATEGORY_CONFIGULATION_SRC = '1SR0grvJIhAZzeRj9iosS32qRYS5q_03NcIDpbGURDSw';
+const SHEET_ID_CATEGORY_CONFIGULATION_SRC_CE = '1uF--uKNpuS65p6nNPb1S7GVGiaCNfbMgn3v7S2m5rpc';
 
 const SHEET_RUNNER_ID_LABEL = 'id';
 const SHEET_RUNNER_NAME_LABEL = 'name';
@@ -49,7 +50,6 @@ interface Run {
 }
 
 const SRC_API_GAME = 'https://www.speedrun.com/api/v1/games?abbreviation=mdread&embed=categories';
-
-const SRC_MDREAD_CATEGORY_ID = '3dxkz0v1';
+const SRC_API_GAME_CE = 'https://www.speedrun.com/api/v1/games?abbreviation=mdreadce&embed=categories';
 
 const PASSWORD_STRETCHING_TIMES = 1000;
