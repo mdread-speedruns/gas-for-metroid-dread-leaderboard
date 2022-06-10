@@ -1,10 +1,16 @@
 /**
  * Delete run to the database
  * 
- * @param id: string
+ * @param data: string
+ * {
+ *    "id": "string"
+ * }
  */
-function deleteRun(id: string) {
+function deleteRun(data: string) {
     try {
+        const json = JSON.parse(data);
+        const id = json.id;
+
         // firstly we search verified runs
         const sheetsId: string[] = [SHEET_ID_RECORD, SHEET_ID_UNVERIFIED_RECORD];
 

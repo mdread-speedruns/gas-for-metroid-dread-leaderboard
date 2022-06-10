@@ -1,10 +1,16 @@
 /**
  * delete runner
  * 
- * @param id: string
+ * @param data: string
+ * {
+ *    "id": "string"
+ * }
  */
-function deleteRunner(id: string) {
+function deleteRunner(data: string) {
     try {
+        const json = JSON.parse(data);
+        const id = json.id;
+
         const sheet = SpreadsheetApp.openById(SHEET_ID_RUNNER).getSheets()[0];
         const header = sheet.getDataRange().getValues().slice(0, 1)[0];
         const table = sheet.getDataRange().getValues().slice(1);

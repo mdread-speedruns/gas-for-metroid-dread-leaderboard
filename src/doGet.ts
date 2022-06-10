@@ -1,12 +1,29 @@
 function doGet(e) {
-    const params = e.parameter;
+    try {
+        const methodName = e.parameter.method;
+        const data = e.parameter.data;
 
+        const method = GAS_METHODS[methodName];
 
-    const result = {};
+        if (!method) {
+            throw new Error(`Method ${methodName} is not supported`);
+        }
 
-    const payload = ContentService
-        .createTextOutput(JSON.stringify(result))
-        .setMimeType(ContentService.MimeType.JSON);
+        const result = method(data);
 
-    return payload;
+        const payload = ContentService
+            .createTextOutput(JSON.stringify(result))
+            .setMimeType(ContentService.MimeType.JSON);
+
+        return payload;
+
+    } catch (e) {
+        Logger.log(e);
+        return ContentService
+            .createTextOutput(JSON.stringify({
+                status: "error",
+                message: e.message
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+    }
 }
