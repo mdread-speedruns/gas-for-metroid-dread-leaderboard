@@ -15,6 +15,7 @@ const SHEET_RUNNER_MAIL_LABEL = 'mail';
 const SHEET_RUNNER_PASSWORD_LABEL = 'password';
 
 interface Runner {
+    id: string,
     name: string,
     nameJp: string | null,
     mail: string,

@@ -9,7 +9,7 @@ function deleteRunner(id: string) {
         const header = sheet.getDataRange().getValues().slice(0, 1)[0];
         const table = sheet.getDataRange().getValues().slice(1);
 
-        const rowId = header.indexOf('id');
+        const rowId = header.indexOf(SHEET_RUNNER_ID_LABEL);
 
         const row = table.find(row => row[rowId] === id);
         if (row === undefined) {
@@ -34,8 +34,14 @@ function deleteRunner(id: string) {
 }
 
 
-function deleteRunnerTest() {
-    const id = '56747ae8-fed4-42fd-a30b-9fff8bb21d61';
+function deleteRunnerTest(): void {
+    const runner = addRunner(`{
+        "name": "test",
+        "nameJp": "テスト",
+        "mail": "mail@example.com",
+        "password": "test"
+    }`);
+    const id = runner.data.id;
     const result = deleteRunner(id);
     Logger.log(result);
 }

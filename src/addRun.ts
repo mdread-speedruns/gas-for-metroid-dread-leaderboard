@@ -16,7 +16,7 @@
  *      verified: boolean
  * }
  */
-function addNewRun(data: string) {
+function addRun(data: string) {
     try {
         const jsonData: Run = JSON.parse(data);
         const runnerId: string = jsonData.runnerId;
@@ -138,8 +138,20 @@ function addNewRun(data: string) {
 }
 
 
-function addNewRunTest(): void {
-    const data = '{"runnerId":"test","realTime":1234.5,"inGameTime":678.9,"category":"test","difficulty":"test","version":"test","turbo":true,"submissionDate":"test","comment":"test","proofLinks":["url1","url2"],"verified":true}';
-    const result = addNewRun(data);
+function addRunTest(): void {
+    const data = `{
+        "runnerId":"test",
+        "realTime":1234.5,
+        "inGameTime":678.9,
+        "category":"test",
+        "difficulty":"test",
+        "version":"test",
+        "turbo":true,
+        "submissionDate":"test",
+        "comment":"test",
+        "proofLinks":["url1","url2"],
+        "verified":true
+    }`;
+    const result = addRun(data);
     Logger.log(result);
 }

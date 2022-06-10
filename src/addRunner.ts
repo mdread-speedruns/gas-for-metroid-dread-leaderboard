@@ -2,6 +2,8 @@
  * add new runner's data
  * this function is assumed that the data has been validated
  * 
+ * Only one account exists per email address
+ * 
  * @param data: string
  *  {
  *      name: string,
@@ -10,7 +12,7 @@
  *      password: string
  *  }
  */
-function addNewRunner(data: string) {
+function addRunner(data: string) {
     try {
         const jsonData: Runner = JSON.parse(data);
         const name: string = jsonData.name;
@@ -76,10 +78,10 @@ function addNewRunner(data: string) {
     }
 }
 
-function addNewRunnerTest() {
+function addRunnerTest() {
     const data = `{"name":"testname","nameJp":"testnamejp","mail":"mail@example.com","password":"password"}`
 
-    const result = addNewRunner(data);
+    const result = addRunner(data);
 
     Logger.log(result);
 }
