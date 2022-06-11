@@ -1,5 +1,12 @@
 function doGet(e) {
     try {
+        const GAS_METHODS: { [key: string]: (data: string) => { status: string, message: string } } = {
+            'addRunner': addRunner,
+            'deleteRunner': deleteRunner,
+            'addRun': addRun,
+            'deleteRun': deleteRun,
+        }
+
         const methodName = e.parameter.method;
         const data = e.parameter.data;
 

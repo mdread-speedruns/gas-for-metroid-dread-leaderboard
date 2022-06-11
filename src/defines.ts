@@ -37,6 +37,7 @@ const SHEET_PROOF_LINK_RECORD_ID_LABEL = 'recordId';
 const SHEET_PROOF_LINK_URL_LABEL = 'url';
 
 interface Run {
+    id?: string,
     runnerId: string,
     realTime: number,
     inGameTime: number,
@@ -52,13 +53,5 @@ interface Run {
 
 const SRC_API_GAME = 'https://www.speedrun.com/api/v1/games?abbreviation=mdread&embed=categories';
 const SRC_API_GAME_CE = 'https://www.speedrun.com/api/v1/games?abbreviation=mdreadce&embed=categories';
-
-const GAS_METHODS: { [key: string]: (data: string) => { status: string, message: string } } = {
-    // 'getRuns': getRuns,
-    'addRunner': addRunner,
-    'deleteRunner': deleteRunner,
-    'addRun': addRun,
-    'deleteRun': deleteRun,
-}
 
 const PASSWORD_STRETCHING_TIMES = 1000;
