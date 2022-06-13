@@ -14,14 +14,6 @@ const SHEET_RUNNER_NAME_JP_LABEL = 'nameJp';
 const SHEET_RUNNER_MAIL_LABEL = 'mail';
 const SHEET_RUNNER_PASSWORD_LABEL = 'password';
 
-interface Runner {
-    id: string,
-    name: string,
-    nameJp: string | null,
-    mail: string,
-    password: string
-}
-
 const SHEET_RECORD_ID_LABEL = 'id';
 const SHEET_RECORD_RUNNER_ID_LABEL = 'runnerId';
 const SHEET_RECORD_REAL_TIME_LABEL = 'realTime';
@@ -36,9 +28,32 @@ const SHEET_RECORD_COMMENT_LABEL = 'comment';
 const SHEET_PROOF_LINK_RECORD_ID_LABEL = 'recordId';
 const SHEET_PROOF_LINK_URL_LABEL = 'url';
 
-interface Run {
-    id?: string,
-    runnerId: string,
+const SRC_API_GAME = 'https://www.speedrun.com/api/v1/games?abbreviation=mdread&embed=categories';
+const SRC_API_GAME_CE = 'https://www.speedrun.com/api/v1/games?abbreviation=mdreadce&embed=categories';
+
+const PASSWORD_STRETCHING_TIMES = 1000;
+// salt for password hashing
+// this constant is actually not used in this script
+// but it may help to understand the password hashing algorithm
+// this means password hash will be different if id is changed
+const PASSWORD_SALT_ITEM_COL_LABEL = SHEET_RUNNER_ID_LABEL;
+
+// types that are used in the code
+type Mailaddress = `${string}@${string}`;
+type ID = string;
+
+
+// interfaces for data received from the client
+interface RunnerReceiver {
+    id: ID,
+    name: string,
+    nameJp: string | null,
+    mail: Mailaddress,
+    password: string
+}
+
+interface RecordReceiver {
+    runnerId: ID,
     realTime: number,
     inGameTime: number,
     category: string,
@@ -51,7 +66,67 @@ interface Run {
     verified: boolean
 }
 
-const SRC_API_GAME = 'https://www.speedrun.com/api/v1/games?abbreviation=mdread&embed=categories';
-const SRC_API_GAME_CE = 'https://www.speedrun.com/api/v1/games?abbreviation=mdreadce&embed=categories';
+interface AuthInfoReceiver {
+    // assume id or mail is sent as a parameter, not both
+    id: ID,
+    mail: Mailaddress,
+    password: string
+}
 
-const PASSWORD_STRETCHING_TIMES = 1000;
+interface IdReceiver {
+    id: ID
+}
+
+interface DataReceiver {
+    method: string;
+    data: {
+        [key: string]: RecordReceiver | AuthInfoReceiver | RunnerReceiver;
+    } | null;
+}
+
+
+// interfaces for data send to the client
+interface RunnerSender {
+    id: ID,
+    name: string,
+    nameJp: string | null,
+    mail: Mailaddress,
+    password: string
+}
+
+
+interface RecordSender {
+    id: ID,
+    runnerId: ID,
+    realTime: number,
+    inGameTime: number,
+    category: string,
+    difficulty: string,
+    version: string,
+    turbo: boolean,
+    submissionDate: string,
+    comment: string,
+    proofLinks: string[],
+    verified: boolean
+}
+
+
+interface AuthInfoSender {
+    id: ID,
+    name: string,
+    nameJp: string | null,
+    mail: Mailaddress,
+    password: string
+}
+
+
+interface IdSender {
+    id: ID
+}
+
+
+interface DataSender {
+    status: string,
+    message: string,
+    data: RunnerSender | RecordSender | AuthInfoSender | IdSender | null;
+}

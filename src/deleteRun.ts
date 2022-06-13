@@ -1,15 +1,14 @@
 /**
  * Delete run to the database
  * 
- * @param data: string
- * {
- *    "id": "string"
- * }
+ * @param data: IdReceiver
+ *  {
+ *     id: string
+ *  }
  */
-function deleteRun(data: string) {
+function deleteRun(data: IdReceiver) {
     try {
-        const json = JSON.parse(data);
-        const id = json.id;
+        const id = data.id;
 
         // firstly we search verified runs
         const sheetsId: string[] = [SHEET_ID_RECORD, SHEET_ID_UNVERIFIED_RECORD];
@@ -44,21 +43,41 @@ function deleteRun(data: string) {
                 sheetProof.deleteRow(rowIndexProof + 2);
             });
 
-            return {
-                status: 'success',
-                message: 'the run has been deleted'
+            const resultData: RecordSender = {
+                id: id,
+                runnerId: row[header.indexOf(SHEET_RECORD_RUNNER_ID_LABEL)],
+                realTime: row[header.indexOf(SHEET_RECORD_REAL_TIME_LABEL)],
+                inGameTime: row[header.indexOf(SHEET_RECORD_IN_GAME_TIME_LABEL)],
+                category: row[header.indexOf(SHEET_RECORD_CATEGORY_LABEL)],
+                difficulty: row[header.indexOf(SHEET_RECORD_DIFFICULTY_LABEL)],
+                version: row[header.indexOf(SHEET_RECORD_VERSION_LABEL)],
+                turbo: row[header.indexOf(SHEET_RECORD_TURBO_LABEL)],
+                submissionDate: row[header.indexOf(SHEET_RECORD_SUBMISSION_DATE_LABEL)],
+                comment: row[header.indexOf(SHEET_RECORD_COMMENT_LABEL)],
+                proofLinks: rowsProof.map(row => row[headerProof.indexOf(SHEET_PROOF_LINK_URL_LABEL)]),
+                verified: sheetId === SHEET_ID_RECORD
             };
 
+
+            const result: DataSender = {
+                status: 'success',
+                message: 'The run has been added successfully.',
+                data: resultData
+            }
+
+            return result
         }
 
         throw new Error('the run was not found');
 
     } catch (error) {
         Logger.log(error)
-        return {
-            status: "error",
-            message: error.message
+        const result: DataSender = {
+            status: 'error',
+            message: error.message,
+            data: null
         }
+        return result;
     }
 }
 
@@ -77,10 +96,13 @@ function deleteRunTest(): void {
         "proofLinks":["url1","url2"],
         "verified":true
     }`;
-    const result = addRun(data);
+    const result = addRun(JSON.parse(data));
 
     const id = result.data.id;
-    const result2 = deleteRun(id);
+    const data2 = `{
+        "id":"${id}"
+    }`;
+    const result2 = deleteRun(JSON.parse(data2));
 
     Logger.log(result);
     Logger.log(result2);

@@ -1,7 +1,7 @@
 /**
  * Add new run to the database
  * 
- * @param data string
+ * @param data: RecordReceiver
  * {
  *      runnerId: string,
  *      realTime: number,
@@ -16,20 +16,19 @@
  *      verified: boolean
  * }
  */
-function addRun(data: string) {
+function addRun(data: RecordReceiver) {
     try {
-        const jsonData: Run = JSON.parse(data);
-        const runnerId: string = jsonData.runnerId;
-        const realTime: number = jsonData.realTime;
-        const inGameTime: number = jsonData.inGameTime;
-        const category: string = jsonData.category;
-        const difficulty: string = jsonData.difficulty;
-        const version: string = jsonData.version;
-        const turbo: boolean = jsonData.turbo;
-        const submissionDate: string = jsonData.submissionDate;
-        const comment: string = jsonData.comment;
-        const proofLinks: string[] = jsonData.proofLinks;
-        const verified: boolean = jsonData.verified;
+        const runnerId: string = data.runnerId;
+        const realTime: number = data.realTime;
+        const inGameTime: number = data.inGameTime;
+        const category: string = data.category;
+        const difficulty: string = data.difficulty;
+        const version: string = data.version;
+        const turbo: boolean = data.turbo;
+        const submissionDate: string = data.submissionDate;
+        const comment: string = data.comment;
+        const proofLinks: string[] = data.proofLinks;
+        const verified: boolean = data.verified;
 
         const uuid: string = Utilities.getUuid();
 
@@ -38,7 +37,6 @@ function addRun(data: string) {
 
         const sheet = SpreadsheetApp.openById(sheetId).getSheets()[0];
         const header = sheet.getDataRange().getValues().slice(0, 1)[0];
-        const table = sheet.getDataRange().getValues().slice(1);
 
         const newRow = [];
         for (const label of header) {
@@ -83,7 +81,6 @@ function addRun(data: string) {
         // add proof links to the database
         const sheetProof = SpreadsheetApp.openById(SHEET_ID_PROOF_LINK).getSheets()[0];
         const headerProof = sheetProof.getDataRange().getValues().slice(0, 1)[0];
-        const tableProof = sheetProof.getDataRange().getValues().slice(1);
 
         const newRowProof: string[][] = [];
         for (const proofLink of proofLinks) {
@@ -110,35 +107,42 @@ function addRun(data: string) {
             sheetProof.appendRow(row);
         }
 
-        return {
+        const resultData: RecordSender = {
+            id: uuid,
+            runnerId: runnerId,
+            realTime: realTime,
+            inGameTime: inGameTime,
+            category: category,
+            difficulty: difficulty,
+            version: version,
+            turbo: turbo,
+            submissionDate: submissionDate,
+            comment: comment,
+            proofLinks: proofLinks,
+            verified: verified
+        }
+
+        const result: DataSender = {
             status: 'success',
-            message: 'the run has been registered',
-            data: {
-                id: uuid,
-                runnerId: runnerId,
-                realTime: realTime,
-                inGameTime: inGameTime,
-                category: category,
-                difficulty: difficulty,
-                version: version,
-                turbo: turbo,
-                submissionDate: submissionDate,
-                comment: comment,
-                verified: verified
-            }
-        };
+            message: 'The run has been added successfully.',
+            data: resultData
+        }
+
+        return result;
 
     } catch (error) {
         Logger.log(error)
-        return {
-            status: "error",
-            message: error.message
+        const result: DataSender = {
+            status: 'error',
+            message: error.message,
+            data: null
         }
+        return result;
     }
 }
 
 
-function addRunTest(): void {
+function addRunExample(): void {
     const data = `{
         "runnerId":"test",
         "realTime":1234.5,
@@ -152,6 +156,6 @@ function addRunTest(): void {
         "proofLinks":["url1","url2"],
         "verified":true
     }`;
-    const result = addRun(data);
+    const result = addRun(JSON.parse(data));
     Logger.log(result);
 }

@@ -1,6 +1,18 @@
+/**
+ * doGet function
+ * 
+ * @param e: Event
+ * e.parameter.data: string
+ *  {
+ *      method: string,
+ *      data?: { ... } // depends on the method
+ *  }
+ * 
+ * @returns payload: string(?)
+ */
 function doGet(e) {
     try {
-        const GAS_METHODS: { [key: string]: (data: string) => { status: string, message: string } } = {
+        const GasMethods: { [key: string]: (data: object) => { status: string, message: string } } = {
             'addRunner': addRunner,
             'deleteRunner': deleteRunner,
             'addRun': addRun,
@@ -8,12 +20,12 @@ function doGet(e) {
         }
 
         const methodName = e.parameter.method;
-        const data = e.parameter.data;
+        const data = JSON.parse(e.parameter.data);
 
-        const method = GAS_METHODS[methodName];
+        const method = GasMethods[methodName];
 
         if (!method) {
-            throw new Error(`Method ${methodName} is not supported`);
+            throw new Error(`Method ( method=${methodName} ) is not supported`);
         }
 
         const result = method(data);

@@ -2,40 +2,45 @@
  * add new runner's data
  * this function is assumed that the data has been validated
  * 
- * Only one account exists per email address
+ * Only one account exists per email address.
  * 
- * @param data: string
+ * @param data: RunnerReceiver
  *  {
+ *      id: string,
  *      name: string,
  *      nameJp: ?string
  *      mail: string,
  *      password: string
  *  }
  */
-function addRunner(data: string) {
+function addRunner(data: RunnerReceiver) {
     try {
-        const jsonData: Runner = JSON.parse(data);
-        const name: string = jsonData.name;
-        const nameJp: string = jsonData.nameJp;
-        const mail: string = jsonData.mail;
-        const password: string = jsonData.password;
+        const id: string = data.id;
+        const name: string = data.name;
+        const nameJp: string = data.nameJp;
+        const mail: Mailaddress = data.mail;
+        const password: string = data.password;
 
-        const uuid: string = Utilities.getUuid();
-        const passwordHashed = convertDataToSha256Hash(password, PASSWORD_STRETCHING_TIMES, name);
+        const passwordHashed = convertDataToSha256Hash(password, PASSWORD_STRETCHING_TIMES, id);
 
         const sheet = SpreadsheetApp.openById(SHEET_ID_RUNNER).getSheets()[0];
         const header = sheet.getDataRange().getValues().slice(0, 1)[0];
         const table = sheet.getDataRange().getValues().slice(1);
 
-        const mailrow = header.indexOf('mail');
-        if (table.some(row => row[mailrow] === mail)) {
+        const rowId = header.indexOf(SHEET_RUNNER_ID_LABEL);
+        if (table.some(row => row[rowId] === id)) {
+            throw new Error(id + ' was already registered');
+        }
+
+        const rowMail = header.indexOf(SHEET_RUNNER_MAIL_LABEL);
+        if (table.some(row => row[rowMail] === mail)) {
             throw new Error(mail + ' is already registered');
         }
 
         const newRow = [];
         for (const label of header) {
             if (label === SHEET_RUNNER_ID_LABEL) {
-                newRow.push(uuid);
+                newRow.push(id);
             }
             if (label === SHEET_RUNNER_NAME_LABEL) {
                 newRow.push(name);
@@ -57,31 +62,37 @@ function addRunner(data: string) {
 
         sheet.appendRow(newRow);
 
-        return {
+        const resultData: RunnerSender = {
+            id: id,
+            name: name,
+            nameJp: nameJp,
+            mail: mail,
+            password: password
+        }
+
+        const result: DataSender = {
             status: 'success',
-            message: 'the runnner has been registered',
-            data: {
-                id: uuid,
-                name: name,
-                nameJp: nameJp,
-                mail: mail,
-                password: password
-            }
-        };
+            message: 'runner was added',
+            data: resultData
+        }
+
+        return result;
 
     } catch (error) {
         Logger.log(error)
-        return {
-            status: "error",
-            message: error.message
+        const result: DataSender = {
+            status: 'error',
+            message: error.message,
+            data: null
         }
+        return result;
     }
 }
 
 function addRunnerTest() {
     const data = `{"name":"testname","nameJp":"testnamejp","mail":"mail@example.com","password":"password"}`
 
-    const result = addRunner(data);
+    const result = addRunner(JSON.parse(data));
 
     Logger.log(result);
 }
