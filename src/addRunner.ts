@@ -4,7 +4,7 @@
  * 
  * Only one account exists per email address.
  * 
- * @param data: RunnerReceiver
+ * @param data: DataReceiver
  *  {
  *      id: string,
  *      name: string,
@@ -13,13 +13,17 @@
  *      password: string
  *  }
  */
-function addRunner(data: RunnerReceiver) {
+function addUser(e: DataReceiver) {
     try {
-        const id: string = data.id;
-        const name: string = data.name;
-        const nameJp: string = data.nameJp;
-        const mail: Mailaddress = data.mail;
-        const password: string = data.password;
+        if (!isMailaddressExist(e.auth.mail)) {
+            throw new Error("You may not use the email address. Please confirm it again.");
+        }
+
+        const id: ID = e.user.id;
+        const name: string = e.user.name;
+        const nameJp: string = e.user.nameJp;
+        const mail: Mailaddress = e.user.mail;
+        const password: string = e.user.password;
 
         const passwordHashed = convertDataToSha256Hash(password, PASSWORD_STRETCHING_TIMES, id);
 
@@ -62,7 +66,7 @@ function addRunner(data: RunnerReceiver) {
 
         sheet.appendRow(newRow);
 
-        const resultData: RunnerSender = {
+        const resultData: UserSender = {
             id: id,
             name: name,
             nameJp: nameJp,
@@ -73,7 +77,7 @@ function addRunner(data: RunnerReceiver) {
         const result: DataSender = {
             status: 'success',
             message: 'runner was added',
-            data: resultData
+            user: resultData
         }
 
         return result;
@@ -83,16 +87,15 @@ function addRunner(data: RunnerReceiver) {
         const result: DataSender = {
             status: 'error',
             message: error.message,
-            data: null
         }
         return result;
     }
 }
 
-function addRunnerTest() {
+function addUserExample() {
     const data = `{"name":"testname","nameJp":"testnamejp","mail":"mail@example.com","password":"password"}`
 
-    const result = addRunner(JSON.parse(data));
+    const result = addUser(JSON.parse(data));
 
     Logger.log(result);
 }

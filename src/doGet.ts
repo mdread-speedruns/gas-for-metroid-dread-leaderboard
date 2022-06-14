@@ -13,22 +13,22 @@
 function doGet(e) {
     try {
         const GasMethods: { [key: string]: (data: object) => { status: string, message: string } } = {
-            'addRunner': addRunner,
-            'deleteRunner': deleteRunner,
-            'addRun': addRun,
-            'deleteRun': deleteRun,
+            'addUser': addUser,
+            'deleteUser': deleteUser,
+            'addRecord': addRecord,
+            'deleteRecord': deleteRecord,
         }
 
-        const methodName = e.parameter.method;
-        const data = JSON.parse(e.parameter.data);
+        const methodName: string = e.parameter.method;
+        const data: DataReceiver = JSON.parse(e.parameter.data);
 
-        const method = GasMethods[methodName];
+        const method: Function = GasMethods[methodName];
 
         if (!method) {
             throw new Error(`Method ( method=${methodName} ) is not supported`);
         }
 
-        const result = method(data);
+        const result: DataSender = method(data);
 
         const payload = ContentService
             .createTextOutput(JSON.stringify(result))

@@ -1,14 +1,16 @@
 /**
  * Delete run to the database
  * 
- * @param data: IdReceiver
- *  {
- *     id: string
- *  }
+ * @param e: : DataReceiver
  */
-function deleteRun(data: IdReceiver) {
+function deleteRecord(e: DataReceiver) {
     try {
-        const id = data.id;
+        const authinfo = authUser(e.auth)
+        if (authinfo.status !== 'success') {
+            throw new Error(authinfo.message);
+        }
+
+        const id = e.record.id;
 
         // firstly we search verified runs
         const sheetsId: string[] = [SHEET_ID_RECORD, SHEET_ID_UNVERIFIED_RECORD];
@@ -45,7 +47,7 @@ function deleteRun(data: IdReceiver) {
 
             const resultData: RecordSender = {
                 id: id,
-                runnerId: row[header.indexOf(SHEET_RECORD_RUNNER_ID_LABEL)],
+                userId: row[header.indexOf(SHEET_RECORD_RUNNER_ID_LABEL)],
                 realTime: row[header.indexOf(SHEET_RECORD_REAL_TIME_LABEL)],
                 inGameTime: row[header.indexOf(SHEET_RECORD_IN_GAME_TIME_LABEL)],
                 category: row[header.indexOf(SHEET_RECORD_CATEGORY_LABEL)],
@@ -62,7 +64,7 @@ function deleteRun(data: IdReceiver) {
             const result: DataSender = {
                 status: 'success',
                 message: 'The run has been added successfully.',
-                data: resultData
+                record: resultData
             }
 
             return result
@@ -75,16 +77,15 @@ function deleteRun(data: IdReceiver) {
         const result: DataSender = {
             status: 'error',
             message: error.message,
-            data: null
         }
         return result;
     }
 }
 
 
-function deleteRunTest(): void {
+function deleteRecordExample(): void {
     const data = `{
-        "runnerId":"test",
+        "userId":"test",
         "realTime":1234.5,
         "inGameTime":678.9,
         "category":"test",
@@ -96,13 +97,13 @@ function deleteRunTest(): void {
         "proofLinks":["url1","url2"],
         "verified":true
     }`;
-    const result = addRun(JSON.parse(data));
+    const result = addRecord(JSON.parse(data));
 
-    const id = result.data.id;
+    const id = result.record.id;
     const data2 = `{
         "id":"${id}"
     }`;
-    const result2 = deleteRun(JSON.parse(data2));
+    const result2 = deleteRecord(JSON.parse(data2));
 
     Logger.log(result);
     Logger.log(result2);

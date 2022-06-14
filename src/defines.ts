@@ -44,7 +44,7 @@ type ID = string;
 
 
 // interfaces for data received from the client
-interface RunnerReceiver {
+interface UserReceiver {
     id: ID,
     name: string,
     nameJp: string | null,
@@ -53,7 +53,8 @@ interface RunnerReceiver {
 }
 
 interface RecordReceiver {
-    runnerId: ID,
+    id?: ID,
+    userId: ID,
     realTime: number,
     inGameTime: number,
     category: string,
@@ -68,8 +69,8 @@ interface RecordReceiver {
 
 interface AuthInfoReceiver {
     // assume id or mail is sent as a parameter, not both
-    id: ID,
-    mail: Mailaddress,
+    id?: ID,
+    mail?: Mailaddress,
     password: string
 }
 
@@ -78,15 +79,15 @@ interface IdReceiver {
 }
 
 interface DataReceiver {
-    method: string;
-    data: {
-        [key: string]: RecordReceiver | AuthInfoReceiver | RunnerReceiver;
-    } | null;
+    auth?: AuthInfoReceiver,
+    record?: RecordReceiver,
+    user?: UserReceiver,
+    id?: IdReceiver,
 }
 
 
 // interfaces for data send to the client
-interface RunnerSender {
+interface UserSender {
     id: ID,
     name: string,
     nameJp: string | null,
@@ -94,10 +95,9 @@ interface RunnerSender {
     password: string
 }
 
-
 interface RecordSender {
     id: ID,
-    runnerId: ID,
+    userId: ID,
     realTime: number,
     inGameTime: number,
     category: string,
@@ -110,7 +110,6 @@ interface RecordSender {
     verified: boolean
 }
 
-
 interface AuthInfoSender {
     id: ID,
     name: string,
@@ -119,14 +118,15 @@ interface AuthInfoSender {
     password: string
 }
 
-
 interface IdSender {
     id: ID
 }
 
-
 interface DataSender {
     status: string,
     message: string,
-    data: RunnerSender | RecordSender | AuthInfoSender | IdSender | null;
+    auth?: AuthInfoSender,
+    record?: RecordSender,
+    user?: UserSender,
+    id?: IdSender,
 }

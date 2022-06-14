@@ -1,32 +1,16 @@
 /**
  * delete runner
  * 
- * @param data: AuthInfoReceiver
- *  {
- *      "id": "string"
- *      "mail": "string"
- *      "password": "string"
- *  }
+ * @param e: DataReceiver
  */
-function deleteRunner(data: AuthInfoReceiver) {
+function deleteUser(e: DataReceiver) {
     try {
-        const authinfo = authUser(data);
+        const authinfo = authUser(e.auth);
         if (authinfo.status !== 'success') {
             throw new Error(authinfo.message);
         }
 
-        const runner = authinfo.data;
-        const id = runner.id;
-        // 明日ここからマーク
-        // 明日ここからマーク
-        // 明日ここからマーク
-        // 明日ここからマーク
-        // 明日ここからマーク
-        // 明日ここからマーク
-        // 明日ここからマーク
-        // 明日ここからマーク
-        // 明日ここからマーク
-
+        const id = authinfo.user.id;
 
         const sheet = SpreadsheetApp.openById(SHEET_ID_RUNNER).getSheets()[0];
         const header = sheet.getDataRange().getValues().slice(0, 1)[0];
@@ -42,31 +26,43 @@ function deleteRunner(data: AuthInfoReceiver) {
         const rowIndex = table.indexOf(row);
         sheet.deleteRow(rowIndex + 2);
 
-        return {
-            status: 'success',
-            message: 'runner was deleted'
+        const resultData: UserSender = {
+            id: row[SHEET_RUNNER_ID_LABEL],
+            name: row[SHEET_RUNNER_NAME_LABEL],
+            nameJp: row[SHEET_RUNNER_NAME_JP_LABEL],
+            mail: row[SHEET_RUNNER_MAIL_LABEL],
+            password: row[SHEET_RUNNER_PASSWORD_LABEL],
         };
+
+        const result: DataSender = {
+            status: 'success',
+            message: 'The run has been added successfully.',
+            user: resultData
+        }
+
+        return result;
 
     } catch (error) {
         Logger.log(error)
         const result: DataSender = {
             status: 'error',
             message: error.message,
-            data: null
         }
         return result;
     }
 }
 
 
-// function deleteRunnerTest(): void {
-//     const runner = addRunner(`{
-//         "name": "test",
-//         "nameJp": "テスト",
-//         "mail": "mail@example.com",
-//         "password": "test"
-//     }`);
-//     const id = runner.data.id;
-//     const result = deleteRunner(id);
-//     Logger.log(result);
-// }
+function deleteUserExample(): void {
+    const result1 = addUser(JSON.parse(`{
+        "id": "testeetetete",
+        "name": "test",
+        "nameJp": "テスト",
+        "mail": "mail@example.com",
+        "password": "test"
+    }`));
+    const result2 = deleteUser(JSON.parse(`{
+        "id": "testeetetete"
+    }`));
+    Logger.log(result2);
+}

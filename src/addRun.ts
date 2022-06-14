@@ -16,9 +16,16 @@
  *      verified: boolean
  * }
  */
-function addRun(data: RecordReceiver) {
+function addRecord(e: DataReceiver) {
     try {
-        const runnerId: string = data.runnerId;
+        const authinfo = authUser(e.auth);
+        if (authinfo.status !== 'success') {
+            throw new Error(authinfo.message);
+        }
+
+        const data = authinfo.record;
+
+        const userId: string = data.userId;
         const realTime: number = data.realTime;
         const inGameTime: number = data.inGameTime;
         const category: string = data.category;
@@ -45,7 +52,7 @@ function addRun(data: RecordReceiver) {
                     newRow.push(uuid);
                     break;
                 case SHEET_RECORD_RUNNER_ID_LABEL:
-                    newRow.push(runnerId);
+                    newRow.push(userId);
                     break;
                 case SHEET_RECORD_REAL_TIME_LABEL:
                     newRow.push(realTime);
@@ -109,7 +116,7 @@ function addRun(data: RecordReceiver) {
 
         const resultData: RecordSender = {
             id: uuid,
-            runnerId: runnerId,
+            userId: userId,
             realTime: realTime,
             inGameTime: inGameTime,
             category: category,
@@ -125,7 +132,7 @@ function addRun(data: RecordReceiver) {
         const result: DataSender = {
             status: 'success',
             message: 'The run has been added successfully.',
-            data: resultData
+            record: resultData
         }
 
         return result;
@@ -135,14 +142,13 @@ function addRun(data: RecordReceiver) {
         const result: DataSender = {
             status: 'error',
             message: error.message,
-            data: null
         }
         return result;
     }
 }
 
 
-function addRunExample(): void {
+function addRecordExample(): void {
     const data = `{
         "runnerId":"test",
         "realTime":1234.5,
@@ -156,6 +162,6 @@ function addRunExample(): void {
         "proofLinks":["url1","url2"],
         "verified":true
     }`;
-    const result = addRun(JSON.parse(data));
+    const result = addRecord(JSON.parse(data));
     Logger.log(result);
 }
