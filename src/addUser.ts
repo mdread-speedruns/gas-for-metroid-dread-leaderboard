@@ -15,10 +15,6 @@
  */
 function addUser(e: DataReceiver) {
     try {
-        if (!isMailaddressExist(e.auth.mail)) {
-            throw new Error("You may not use the email address. Please confirm it again.");
-        }
-
         const id: ID = e.user.id;
         const name: string = e.user.name;
         const nameJp: string = e.user.nameJp;
@@ -31,31 +27,31 @@ function addUser(e: DataReceiver) {
         const header = sheet.getDataRange().getValues().slice(0, 1)[0];
         const table = sheet.getDataRange().getValues().slice(1);
 
-        const rowId = header.indexOf(SHEET_RUNNER_ID_LABEL);
+        const rowId = header.indexOf(SHEET_USER_ID_LABEL);
         if (table.some(row => row[rowId] === id)) {
             throw new Error(id + ' was already registered');
         }
 
-        const rowMail = header.indexOf(SHEET_RUNNER_MAIL_LABEL);
+        const rowMail = header.indexOf(SHEET_USER_MAIL_LABEL);
         if (table.some(row => row[rowMail] === mail)) {
             throw new Error(mail + ' is already registered');
         }
 
         const newRow = [];
         for (const label of header) {
-            if (label === SHEET_RUNNER_ID_LABEL) {
+            if (label === SHEET_USER_ID_LABEL) {
                 newRow.push(id);
             }
-            if (label === SHEET_RUNNER_NAME_LABEL) {
+            if (label === SHEET_USER_NAME_LABEL) {
                 newRow.push(name);
             }
-            if (label === SHEET_RUNNER_NAME_JP_LABEL) {
+            if (label === SHEET_USER_NAME_JP_LABEL) {
                 newRow.push(nameJp);
             }
-            if (label === SHEET_RUNNER_MAIL_LABEL) {
+            if (label === SHEET_USER_MAIL_LABEL) {
                 newRow.push(mail);
             }
-            if (label === SHEET_RUNNER_PASSWORD_LABEL) {
+            if (label === SHEET_USER_PASSWORD_LABEL) {
                 newRow.push(passwordHashed);
             }
         }

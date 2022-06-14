@@ -28,7 +28,7 @@
  */
 function getRuns(data?: string) {
     try {
-        // const jsonData: Run = JSON.parse(data);
+        // const jsonData: RecordSender = JSON.parse(data);
 
         const sheetIds = [SHEET_ID_RECORD, SHEET_ID_UNVERIFIED_RECORD];
 
@@ -40,7 +40,7 @@ function getRuns(data?: string) {
         const colIdIdxProoflink = headerProoflink.indexOf(SHEET_PROOF_LINK_RECORD_ID_LABEL);
         const colUrlIdxProoflink = headerProoflink.indexOf(SHEET_PROOF_LINK_URL_LABEL);
 
-        const newData: Array<Run> = [];
+        const newData: Array<RecordSender> = [];
 
         for (const sheetId of sheetIds) {
             const sheet = SpreadsheetApp.openById(sheetId).getSheets()[0];
@@ -60,9 +60,9 @@ function getRuns(data?: string) {
             const colCommentIdx = header.indexOf(SHEET_RECORD_COMMENT_LABEL);
 
             for (const row of table) {
-                const newRow: Run = {
+                const newRow: RecordSender = {
                     id: row[colIdIdx],
-                    runnerId: row[colRunnerIdIdx],
+                    userId: row[colRunnerIdIdx],
                     realTime: row[colRealTimeIdx],
                     inGameTime: row[colInGameTimeIdx],
                     category: row[colCategoryIdx],

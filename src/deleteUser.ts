@@ -16,7 +16,7 @@ function deleteUser(e: DataReceiver) {
         const header = sheet.getDataRange().getValues().slice(0, 1)[0];
         const table = sheet.getDataRange().getValues().slice(1);
 
-        const rowId = header.indexOf(SHEET_RUNNER_ID_LABEL);
+        const rowId = header.indexOf(SHEET_USER_ID_LABEL);
 
         const row = table.find(row => row[rowId] === id);
         if (row === undefined) {
@@ -27,11 +27,11 @@ function deleteUser(e: DataReceiver) {
         sheet.deleteRow(rowIndex + 2);
 
         const resultData: UserSender = {
-            id: row[SHEET_RUNNER_ID_LABEL],
-            name: row[SHEET_RUNNER_NAME_LABEL],
-            nameJp: row[SHEET_RUNNER_NAME_JP_LABEL],
-            mail: row[SHEET_RUNNER_MAIL_LABEL],
-            password: row[SHEET_RUNNER_PASSWORD_LABEL],
+            id: row[SHEET_USER_ID_LABEL],
+            name: row[SHEET_USER_NAME_LABEL],
+            nameJp: row[SHEET_USER_NAME_JP_LABEL],
+            mail: row[SHEET_USER_MAIL_LABEL],
+            password: row[SHEET_USER_PASSWORD_LABEL],
         };
 
         const result: DataSender = {

@@ -19,21 +19,21 @@ function authUser(data: AuthInfoReceiver): DataSender {
         // const header = sheet.getDataRange().getValues().slice(0, 1)[0];
         const table = sheet.getDataRange().getValues().slice(1);
 
-        const row = table.find(row => row[SHEET_RUNNER_ID_LABEL] === id || row[SHEET_RUNNER_MAIL_LABEL] === mail);
+        const row = table.find(row => row[SHEET_USER_ID_LABEL] === id || row[SHEET_USER_MAIL_LABEL] === mail);
         if (row === undefined) {
             throw new Error(id + ' was not found');
         }
 
         // validate password
         const hashed = convertDataToSha256Hash(password, PASSWORD_STRETCHING_TIMES, id);
-        if (hashed !== row[SHEET_RUNNER_PASSWORD_LABEL]) {
+        if (hashed !== row[SHEET_USER_PASSWORD_LABEL]) {
             throw new Error('password is invalid');
         }
 
         const resultData: UserSender = {
             id: id,
-            name: row[SHEET_RUNNER_NAME_LABEL],
-            nameJp: row[SHEET_RUNNER_NAME_JP_LABEL],
+            name: row[SHEET_USER_NAME_LABEL],
+            nameJp: row[SHEET_USER_NAME_JP_LABEL],
             mail: mail,
             password: password
         };
