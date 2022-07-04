@@ -15,7 +15,7 @@ function authUser(data: AuthInfoReceiver): DataSender {
         const mail: Mailaddress = data.mail;
         const password: string = data.password;
 
-        const sheet = SpreadsheetApp.openById(SHEET_ID_RUNNER).getSheets()[0];
+        const sheet = SpreadsheetApp.openById(SHEET_ID_USER).getSheets()[0];
         // const header = sheet.getDataRange().getValues().slice(0, 1)[0];
         const table = sheet.getDataRange().getValues().slice(1);
 
@@ -30,7 +30,7 @@ function authUser(data: AuthInfoReceiver): DataSender {
             throw new Error('password is invalid');
         }
 
-        const resultData: UserSender = {
+        const resultData: AuthInfoSender = {
             id: id,
             name: row[SHEET_USER_NAME_LABEL],
             nameJp: row[SHEET_USER_NAME_JP_LABEL],
@@ -41,7 +41,7 @@ function authUser(data: AuthInfoReceiver): DataSender {
         const result: DataSender = {
             status: 'success',
             message: 'runner was authenticated',
-            user: resultData
+            auth: resultData
         };
 
         return result;

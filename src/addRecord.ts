@@ -18,12 +18,12 @@
  */
 function addRecord(e: DataReceiver) {
     try {
-        const authinfo = authUser(e.auth);
+        const authinfo: DataSender = authUser(e.auth);
         if (authinfo.status !== 'success') {
             throw new Error(authinfo.message);
         }
 
-        const data = authinfo.record;
+        const data = e.record;
 
         const userId: string = data.userId;
         const realTime: number = data.realTime;
@@ -78,6 +78,8 @@ function addRecord(e: DataReceiver) {
                 case SHEET_RECORD_COMMENT_LABEL:
                     newRow.push(comment);
                     break;
+                default:
+                    throw new Error(`Unknown label: ${label}`);
             }
         }
 

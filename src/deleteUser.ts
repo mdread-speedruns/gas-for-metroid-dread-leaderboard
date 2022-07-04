@@ -10,9 +10,9 @@ function deleteUser(e: DataReceiver) {
             throw new Error(authinfo.message);
         }
 
-        const id = authinfo.user.id;
+        const id = authinfo.auth.id;
 
-        const sheet = SpreadsheetApp.openById(SHEET_ID_RUNNER).getSheets()[0];
+        const sheet = SpreadsheetApp.openById(SHEET_ID_USER).getSheets()[0];
         const header = sheet.getDataRange().getValues().slice(0, 1)[0];
         const table = sheet.getDataRange().getValues().slice(1);
 
@@ -32,6 +32,9 @@ function deleteUser(e: DataReceiver) {
             nameJp: row[SHEET_USER_NAME_JP_LABEL],
             mail: row[SHEET_USER_MAIL_LABEL],
             password: row[SHEET_USER_PASSWORD_LABEL],
+            registeredDate: row[SHEET_USER_REGISTERED_DATE_LABEL],
+            verified: row[SHEET_USER_VERIFIED_LABEL],
+            verifyToken: row[SHEET_USER_VERIFY_TOKEN_LABEL]
         };
 
         const result: DataSender = {

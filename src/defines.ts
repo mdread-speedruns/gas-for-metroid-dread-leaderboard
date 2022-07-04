@@ -1,6 +1,6 @@
 // testcase
-const SHEET_ID_RUNNER = '1h1-GOPR5VAsv1r5w_-u4c--BROWtJvvw_aWz0s6ui1k';
-const SHEET_ID_RUNNERS_RECORD = '19ixRr_8FFd6Ub10eLfcGbSRmLEec33dlCeQLHLr61qU';
+const SHEET_ID_USER = '1h1-GOPR5VAsv1r5w_-u4c--BROWtJvvw_aWz0s6ui1k';
+const SHEET_ID_USERS_RECORD = '19ixRr_8FFd6Ub10eLfcGbSRmLEec33dlCeQLHLr61qU';
 const SHEET_ID_PROOF_LINK = '1AULTW4jY0624HzYrMY-jnjCG6WOOvlbBAwodhcpAEro';
 const SHEET_ID_RECORD = '1xpOq-BRLotYqB1xFCJNh_WmsB2hqHdHG35CkytCc2wE';
 const SHEET_ID_UNVERIFIED_RECORD = '1d9fns88mJZanbB4ujnDXm-t7AID-v2aT9PoImCREbRY';
@@ -40,6 +40,8 @@ const PASSWORD_STRETCHING_TIMES = 1000;
 // but it may help to understand the password hashing algorithm
 // this means password hash will be different if id is changed
 const PASSWORD_SALT_ITEM_COL_LABEL = SHEET_USER_ID_LABEL;
+const DEPLOY_ID = 'AKfycbyqx02VzLElvtJCtKALN-IrO9DXhqgo1mvX-1bMhQUI6CPXb3LTaic9bS5NR22uhcnv';
+const URL_BASE = `https://script.google.com/macros/s/${DEPLOY_ID}/exec`;
 
 // types that are used in the code
 type Mailaddress = `${string}@${string}`;
@@ -96,7 +98,10 @@ interface UserSender {
     name: string,
     nameJp: string | null,
     mail: Mailaddress,
-    password: string
+    password: string,
+    registeredDate: string,
+    verified: boolean,
+    verifyToken: string,
 }
 
 interface RecordSender {
