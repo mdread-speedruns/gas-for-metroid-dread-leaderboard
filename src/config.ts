@@ -1,4 +1,3 @@
-// testcase
 const SHEET_ID_USER = '1h1-GOPR5VAsv1r5w_-u4c--BROWtJvvw_aWz0s6ui1k';
 const SHEET_ID_USERS_RECORD = '19ixRr_8FFd6Ub10eLfcGbSRmLEec33dlCeQLHLr61qU';
 const SHEET_ID_PROOF_LINK = '1AULTW4jY0624HzYrMY-jnjCG6WOOvlbBAwodhcpAEro';
@@ -35,107 +34,19 @@ const SRC_API_GAME = 'https://www.speedrun.com/api/v1/games?abbreviation=mdread&
 const SRC_API_GAME_CE = 'https://www.speedrun.com/api/v1/games?abbreviation=mdreadce&embed=categories';
 
 const PASSWORD_STRETCHING_TIMES = 1000;
-// salt for password hashing
-// this constant is actually not used in this script
-// but it may help to understand the password hashing algorithm
-// this means password hash will be different if id is changed
 const PASSWORD_SALT_ITEM_COL_LABEL = SHEET_USER_ID_LABEL;
+
 const DEPLOY_ID = 'AKfycbyqx02VzLElvtJCtKALN-IrO9DXhqgo1mvX-1bMhQUI6CPXb3LTaic9bS5NR22uhcnv';
 const URL_BASE = `https://script.google.com/macros/s/${DEPLOY_ID}/exec`;
 
-// types that are used in the code
-type Mailaddress = `${string}@${string}`;
-type ID = string;
-
-
-// interfaces for data received from the client
-interface UserReceiver {
-    id: ID,
-    name: string,
-    nameJp: string | null,
-    mail: Mailaddress,
-    password: string,
-    verifyToken?: string,
+const POST_METHODS = {
+    addUser: 'addUser',
+    verifyUser: 'verifyUser',
+    addRecord: 'addRecord'
 }
 
-interface RecordReceiver {
-    id?: ID,
-    userId: ID,
-    realTime: number,
-    inGameTime: number,
-    category: string,
-    difficulty: string,
-    version: string,
-    turbo: boolean,
-    submissionDate: string,
-    comment: string,
-    proofLinks: string[]
-    verified: boolean
-}
-
-interface AuthInfoReceiver {
-    // assume id or mail is sent as a parameter, not both
-    id?: ID,
-    mail?: Mailaddress,
-    password: string
-}
-
-interface IdReceiver {
-    id: ID
-}
-
-interface DataReceiver {
-    auth?: AuthInfoReceiver,
-    record?: RecordReceiver,
-    user?: UserReceiver,
-    id?: IdReceiver,
-}
-
-
-// interfaces for data send to the client
-interface UserSender {
-    id: ID,
-    name: string,
-    nameJp: string | null,
-    mail: Mailaddress,
-    password: string,
-    registeredDate: string,
-    verified: boolean,
-    verifyToken: string,
-}
-
-interface RecordSender {
-    id: ID,
-    userId: ID,
-    realTime: number,
-    inGameTime: number,
-    category: string,
-    difficulty: string,
-    version: string,
-    turbo: boolean,
-    submissionDate: string,
-    comment: string,
-    proofLinks: string[],
-    verified: boolean
-}
-
-interface AuthInfoSender {
-    id: ID,
-    name: string,
-    nameJp: string | null,
-    mail: Mailaddress,
-    password: string
-}
-
-interface IdSender {
-    id: ID
-}
-
-interface DataSender {
+type statusResponder = {
     status: string,
     message: string,
-    auth?: AuthInfoSender,
-    record?: RecordSender,
-    user?: UserSender,
-    id?: IdSender,
-}
+    data?: object
+};
