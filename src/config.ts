@@ -17,7 +17,7 @@ const SHEET_USER_VERIFIED_LABEL = 'verified';
 const SHEET_USER_VERIFY_TOKEN_LABEL = 'verifyToken';
 
 const SHEET_RECORD_ID_LABEL = 'id';
-const SHEET_RECORD_RUNNER_ID_LABEL = 'userId';
+const SHEET_RECORD_USER_ID_LABEL = 'userId';
 const SHEET_RECORD_REAL_TIME_LABEL = 'realTime';
 const SHEET_RECORD_IN_GAME_TIME_LABEL = 'inGameTime';
 const SHEET_RECORD_CATEGORY_LABEL = 'category';
@@ -47,6 +47,11 @@ const POST_METHODS = {
     deleteRecord: 'deleteRecord'
 }
 
+const GET_METHODS = {
+    getRecords: 'getRecords',
+    getUsers: 'getUsers'
+}
+
 const MAILADDRESS_REGEX = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 
 // アカウント認証用
@@ -69,7 +74,7 @@ type VerifyInfo = {
 
 type DeleteIdentifierInfo = {
     identifier: string
-}
+};
 
 type RecordInfo = {
     id?: string
@@ -86,7 +91,7 @@ type RecordInfo = {
     verified: boolean
 };
 
-type ReceiveData = {
+type DoPostData = {
     authInfo?: AuthInfo,
     userInfo?: UserInfo,
     verifyInfo?: VerifyInfo,
@@ -94,7 +99,14 @@ type ReceiveData = {
     deleteIdentifierInfo?: DeleteIdentifierInfo,
 };
 
-type StatusResponder = {
+type DoGetParams = {
+    method: string,
+
+    // method=getRecords でのクエリパラメータ
+    verified?: boolean // undefなら全て取得
+};
+
+type PostStatusResponder = {
     status: string,
     message: string,
     data?: {
@@ -102,5 +114,14 @@ type StatusResponder = {
         verifyInfo?: VerifyInfo,
         recordInfo?: RecordInfo
         deleteIdentifierInfo?: DeleteIdentifierInfo,
+    }
+};
+
+type GetStatusResponder = {
+    status: string,
+    message: string,
+    data?: {
+        userInfo?: UserInfo[],
+        recordInfo?: RecordInfo[]
     }
 };

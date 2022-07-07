@@ -1,4 +1,4 @@
-function deleteRecord(data: ReceiveData): StatusResponder {
+function deleteRecord(data: DoPostData): PostStatusResponder {
     try {
         const deleteIdentifierInfo: DeleteIdentifierInfo = data.deleteIdentifierInfo;
         const authinfo: AuthInfo = data.authInfo;
@@ -27,7 +27,7 @@ function deleteRecord(data: ReceiveData): StatusResponder {
             const table = sheet.getDataRange().getValues().slice(1);
 
             const SHEET_RECORD_ID_LABEL_INDEX = header.indexOf(SHEET_RECORD_ID_LABEL);
-            const SHEET_RECORD_RUNNER_ID_LABEL_INDEX = header.indexOf(SHEET_RECORD_RUNNER_ID_LABEL);
+            const SHEET_RECORD_RUNNER_ID_LABEL_INDEX = header.indexOf(SHEET_RECORD_USER_ID_LABEL);
             const SHEET_RECORD_REAL_TIME_LABEL_INDEX = header.indexOf(SHEET_RECORD_REAL_TIME_LABEL);
             const SHEET_RECORD_IN_GAME_TIME_LABEL_INDEX = header.indexOf(SHEET_RECORD_IN_GAME_TIME_LABEL);
             const SHEET_RECORD_CATEGORY_LABEL_INDEX = header.indexOf(SHEET_RECORD_CATEGORY_LABEL);
@@ -67,7 +67,7 @@ function deleteRecord(data: ReceiveData): StatusResponder {
                 sheetProof.deleteRow(rowIndexProof + 2);
             });
 
-            const result: StatusResponder = {
+            const result: PostStatusResponder = {
                 status: 'success',
                 message: 'The run has been added successfully.',
                 data: {
@@ -95,7 +95,7 @@ function deleteRecord(data: ReceiveData): StatusResponder {
 
     } catch (error) {
         Logger.log(error)
-        const result: StatusResponder = {
+        const result: PostStatusResponder = {
             status: 'error',
             message: error.message,
         }

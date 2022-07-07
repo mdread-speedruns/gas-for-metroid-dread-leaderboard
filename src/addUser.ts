@@ -1,5 +1,5 @@
 // 未承認ユーザーを追加する
-function addUser(data: ReceiveData): StatusResponder {
+function addUser(data: DoPostData): PostStatusResponder {
     try {
         const userinfo: UserInfo = data.userInfo;
 
@@ -112,7 +112,7 @@ function addUser(data: ReceiveData): StatusResponder {
         `;
         MailApp.sendEmail(mail, '[Metroid Dread Leaderboard Team] Verify your account', mailBody);
 
-        const result: StatusResponder = {
+        const result: PostStatusResponder = {
             status: 'success',
             message: "User data has been successfully added.",
             data: {
@@ -130,7 +130,7 @@ function addUser(data: ReceiveData): StatusResponder {
 
     } catch (error) {
         console.log(error)
-        const result: StatusResponder = {
+        const result: PostStatusResponder = {
             status: 'error',
             message: error.message,
         }

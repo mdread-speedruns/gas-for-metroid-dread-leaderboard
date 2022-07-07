@@ -27,7 +27,7 @@ function doPost(e) {
          *    },
          *    verifyInfo?: {
          *      token: string
-         *    }
+         *    }, ...
          *  }
          */
         const data = JSON.parse(e.postData.getDataAsString())
@@ -39,14 +39,14 @@ function doPost(e) {
             throw new Error(`Method ( method=${methodName} ) is not supported`);
         }
 
-        const result: StatusResponder = method(data);
+        const result: PostStatusResponder = method(data);
         const payload = ContentService
             .createTextOutput(JSON.stringify(result))
             .setMimeType(ContentService.MimeType.JSON);
         return payload;
     }
     catch (e) {
-        const result: StatusResponder = {
+        const result: PostStatusResponder = {
             status: "error",
             message: "doPost Error has been occured"
         };

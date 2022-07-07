@@ -1,4 +1,4 @@
-function verifyUser(data: ReceiveData): StatusResponder {
+function verifyUser(data: DoPostData): PostStatusResponder {
     try {
         const verifyInfo: VerifyInfo = data.verifyInfo;
         const authInfo: AuthInfo = data.authInfo;
@@ -36,7 +36,7 @@ function verifyUser(data: ReceiveData): StatusResponder {
 
         sheet.getDataRange().setValues([header].concat(table));
 
-        const result: StatusResponder = {
+        const result: PostStatusResponder = {
             status: 'success',
             message: "successfully verified",
             data: {
@@ -46,7 +46,7 @@ function verifyUser(data: ReceiveData): StatusResponder {
         return result;
     } catch (error) {
         console.log(error)
-        const result: StatusResponder = {
+        const result: PostStatusResponder = {
             status: 'error',
             message: error.message,
         }

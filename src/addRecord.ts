@@ -1,6 +1,6 @@
 // 記録を追加する
 // 未承認記録を想定するので、IDを指定しても破棄されるので注意
-function addRecord(data: ReceiveData): StatusResponder {
+function addRecord(data: DoPostData): PostStatusResponder {
     try {
         const recordinfo: RecordInfo = data.recordInfo;
         const authinfo: AuthInfo = data.authInfo;
@@ -49,7 +49,7 @@ function addRecord(data: ReceiveData): StatusResponder {
                 case SHEET_RECORD_ID_LABEL:
                     newRow.push(recordID);
                     break;
-                case SHEET_RECORD_RUNNER_ID_LABEL:
+                case SHEET_RECORD_USER_ID_LABEL:
                     newRow.push(userId);
                     break;
                 case SHEET_RECORD_REAL_TIME_LABEL:
@@ -116,7 +116,7 @@ function addRecord(data: ReceiveData): StatusResponder {
             sheetProof.appendRow(row);
         }
 
-        const result: StatusResponder = {
+        const result: PostStatusResponder = {
             status: 'success',
             message: 'The run has been added successfully.',
             data: {
@@ -141,7 +141,7 @@ function addRecord(data: ReceiveData): StatusResponder {
 
     } catch (error) {
         Logger.log(error)
-        const result: StatusResponder = {
+        const result: PostStatusResponder = {
             status: 'error',
             message: error.message,
         }
