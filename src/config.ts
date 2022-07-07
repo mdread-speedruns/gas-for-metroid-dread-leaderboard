@@ -42,11 +42,65 @@ const URL_BASE = `https://script.google.com/macros/s/${DEPLOY_ID}/exec`;
 const POST_METHODS = {
     addUser: 'addUser',
     verifyUser: 'verifyUser',
-    addRecord: 'addRecord'
+    addRecord: 'addRecord',
+    deleteUser: 'deleteUser',
+    deleteRecord: 'deleteRecord'
 }
 
-type statusResponder = {
+const MAILADDRESS_REGEX = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+
+// アカウント認証用
+type AuthInfo = {
+    identifier: string, // id or mail
+    password: string
+}
+
+type UserInfo = {
+    id: string,
+    name: string,
+    nameJp?: string,
+    mail: string,
+    password: string
+};
+
+type VerifyInfo = {
+    token: string
+};
+
+type DeleteIdentifierInfo = {
+    identifier: string
+}
+
+type RecordInfo = {
+    id?: string
+    userId: string,
+    realTime: number,
+    inGameTime: number,
+    category: string,
+    difficulty: string,
+    version: string,
+    turbo: boolean,
+    submissionDate: string,
+    comment: string,
+    proofLinks: string[],
+    verified: boolean
+};
+
+type ReceiveData = {
+    authInfo?: AuthInfo,
+    userInfo?: UserInfo,
+    verifyInfo?: VerifyInfo,
+    recordInfo?: RecordInfo
+    deleteIdentifierInfo?: DeleteIdentifierInfo,
+};
+
+type StatusResponder = {
     status: string,
     message: string,
-    data?: object
+    data?: {
+        userInfo?: UserInfo,
+        verifyInfo?: VerifyInfo,
+        recordInfo?: RecordInfo
+        deleteIdentifierInfo?: DeleteIdentifierInfo,
+    }
 };
