@@ -30,7 +30,7 @@ requests.get(
 
 ## example
 
-### adding a new user
+### add a new user
 
 ```python
 requests.post(
@@ -47,38 +47,105 @@ requests.post(
 )
 ```
 
-### adding a new record
-
-```python
-requests.post(
-    'https://script.google.com/macros/s/abc.../exec?method=addRecord',
-    data={
-        'userId': 'my_id',
-        'realtime': '00:00:00',
-        'ingametime': '00:00:00',
-        'category': 'Any',
-        'difficulty': 'Normal',
-        'version': '1.0.0',
-        'turbo': 'False',
-        'submissiondate': '2020-01-01',
-        'comment': 'my_comment',
-        'prooflinks': [
-            'https://example.com/my_proof_link_1'
-        ],
-        'verified': 'True',
-    }
-)
-```
-
 ### verifying a user
 
 ```python
 requests.post(
     'https://script.google.com/macros/s/abc.../exec?method=verifyUser',
     data={
-        'id': 'my_id',
-        'password': 'my_password',
-        'verifiedToken': 'token'
+        authInfo: {
+            identifier: 'my_id',
+            password: 'my_password'
+        },
+        verifyInfo: {
+            verifiedToken: 'token'
+        }
     }
 )
 ```
+
+### delete User
+
+```python
+requests.post(
+    'https://script.google.com/macros/s/abc.../exec?method=verifyUser',
+    data={
+        authInfo: {
+            identifier: 'my_id',
+            password: 'my_password'
+        },
+        deleteIdentifierInfo: {
+            identifier: 'my_id'
+        }
+    }
+)
+```
+
+### add a new record
+
+```python
+requests.post(
+    'https://script.google.com/macros/s/abc.../exec?method=addRecord',
+    data = {
+        authInfo: {
+            identifier: 'my_id',
+            password: '12345678'
+        },
+        recordInfo: {
+            userId: 'my_id',
+            realtime: '00:00:00',
+            ingametime: '00:00:00',
+            category: 'Any',
+            difficulty: 'Normal',
+            version: '1.0.0',
+            turbo: 'False',
+            submissiondate: '2020-01-01',
+            comment: 'my_comment',
+            prooflinks: [
+                'https//example.com/my_proof_link_1',
+                'https//example.com/my_proof_link_2',
+            ],
+            verified: 'True',
+        }
+    }
+)
+```
+
+### delete a record
+
+```python
+requests.post(
+    'https://script.google.com/macros/s/abc.../exec?method=addRecord',
+    data = {
+        authInfo: {
+            identifier: 'my_id',
+            password: '12345678'
+        },
+        deleteIdentifierInfo: {
+            identfier: 'my_record_id'
+        }
+    }
+)
+```
+
+
+## GET
+
+### get Users
+
+```python
+requests.get(
+    'https://script.google.com/macros/s/abc.../exec?method=getUsers',
+    }
+)
+```
+
+### get Records
+
+```python
+requests.get(
+    'https://script.google.com/macros/s/abc.../exec?method=getRecords',
+    }
+)
+```
+
