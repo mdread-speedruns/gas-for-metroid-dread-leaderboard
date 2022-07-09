@@ -37,7 +37,7 @@ const PASSWORD_STRETCHING_TIMES = 1000;
 const PASSWORD_SALT_ITEM_COL_LABEL = SHEET_USER_ID_LABEL;
 
 const DEPLOY_ID = 'AKfycbyqx02VzLElvtJCtKALN-IrO9DXhqgo1mvX-1bMhQUI6CPXb3LTaic9bS5NR22uhcnv';
-const URL_BASE = `https://script.google.com/macros/s/${DEPLOY_ID}/exec`;
+const URL_BASE = `https://script.googleapis.com/v1/scripts/${DEPLOY_ID}:run`;
 
 const POST_METHODS = {
     addUser: 'addUser',
@@ -110,8 +110,6 @@ type DoPostData = {
 };
 
 type DoGetParams = {
-    method: string,
-
     // getRecords: IDを絞る(unused)
     // getUsers: 特定のユーザーで絞る(unused)
     id?: string,

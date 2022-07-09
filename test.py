@@ -1,20 +1,25 @@
-from googleapiclient.discovery import build
-
-API_KEY = "AIzaSyDcvdSNTdHDG3pnhaZOh4Sz2qtL5VYxTgE"
-
-SAMPLE_SPREADSHEET_ID = '15qMXVPzqXtaOA3ON3I23TuEdmXR6QMwFrvXaUpyQviU'
-SAMPLE_RANGE_NAME = 'Taulukko1!A1:H4'
+import json
+import requests
 
 
-def main():
-    service = build('sheets', 'v4', developerKey=API_KEY)
-    sheet = service.spreadsheets()
-    result = sheet.values().get(
-        spreadsheetId=SAMPLE_SPREADSHEET_ID,
-        range=SAMPLE_RANGE_NAME).execute()
-    values = result.get('values', [])
-    print(values)
+def postData(method, data):
+    if(method is None):
+        print("params is empty")
+        return False
+
+    payload = {
+        "function": method,
+        "data": data
+    }
+    url = "https://script.googleapis.com/v1/scripts/AKfycbyqx02VzLElvtJCtKALN-IrO9DXhqgo1mvX-1bMhQUI6CPXb3LTaic9bS5NR22uhcnv:run"
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
+    
+    print(response)
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    # postしたいデータを渡す
+    postData("getUsers", {})

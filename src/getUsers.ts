@@ -42,6 +42,6 @@ function getUsers(data: DoGetParams): GetStatusResponder {
 }
 
 function getUsersExample(): void {
-    const result = getUsers({ method: "getUsers" });
+    const result = getUsers({});
     Logger.log(result);
 }

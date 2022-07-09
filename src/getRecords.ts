@@ -89,6 +89,6 @@ function getRecords(data: DoGetParams): GetStatusResponder {
 
 
 function getRecordsExample(): void {
-    const result = getRecords({ method: "getRecords" });
+    const result = getRecords({});
     Logger.log(result);
 }
