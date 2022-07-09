@@ -35,12 +35,14 @@ requests.get(
 ```python
 requests.post(
     'https://script.google.com/macros/s/abc.../exec?method=addUser',
-    data={
-        'id': 'my_id',
-        'name': 'my_name',
-        'nameJp': 'my_name_jp',
-        'email': 'my@email',
-        'password': 'my_password'
+    data = {
+        userInfo: {
+            id: 'my_id',
+            name: 'my_name',
+            nameJp: 'my_name_jp',
+            email: 'my@email.com',
+            password: 'my_password'
+        }
     }
 )
 ```

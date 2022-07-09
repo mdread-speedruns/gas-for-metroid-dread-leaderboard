@@ -153,8 +153,12 @@ function addRecord(data: DoPostData): PostStatusResponder {
 
 function addRecordExample(): void {
     const data: DoPostData = {
+        authInfo: {
+            identifier: "test123456",
+            password: "12345678"
+        },
         recordInfo: {
-            userId: "test",
+            userId: "test123456",
             realTime: 1234.5,
             inGameTime: 678.9,
             category: "test",

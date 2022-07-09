@@ -52,7 +52,11 @@ const GET_METHODS = {
     getUsers: 'getUsers'
 }
 
+// メールアドレスの正規表現
 const MAILADDRESS_REGEX = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+// パスワードの条件用正規表現
+const PASSWORD_REGEX = /^[a-zA-Z0-9.?/-]{8,64}$/
+const PASSWORD_MAX_RETRY = 5
 
 // アカウント認証用
 type AuthInfo = {

@@ -66,18 +66,28 @@ function deleteUser(data: DoPostData): PostStatusResponder {
 
 
 function deleteUserExample(): void {
-    const result1 = addUser(JSON.parse(`{
+    const data: DoPostData = {
         userInfo: {
-            "id": "testeetetete",
-            "name": "test",
-            "nameJp": "テスト",
-            "mail": "mail@example.com",
-            "password": "test"
+            id: "test81345",
+            name: "testman",
+            nameJp: "おなまええええ",
+            mail: "mamail@example.com",
+            password: "12345678"
         }
-    }`));
+    };
+    const result = addUser(data);
 
-    const result2 = deleteUser(JSON.parse(`{
-        "id": "testeetetete"
-    }`));
+    const data2: DoPostData = {
+        authInfo: {
+            identifier: "test81345",
+            password: "12345678"
+        },
+        deleteIdentifierInfo: {
+            identifier: "test81345"
+        }
+    };
+    const result2 = deleteRecord(data2);
+
+    Logger.log(result);
     Logger.log(result2);
 }

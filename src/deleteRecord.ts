@@ -107,7 +107,7 @@ function deleteRecord(data: DoPostData): PostStatusResponder {
 function deleteRecordExample(): void {
     const data: DoPostData = {
         recordInfo: {
-            userId: "test",
+            userId: "test123456",
             realTime: 1234.5,
             inGameTime: 678.9,
             category: "test",

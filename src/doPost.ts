@@ -1,35 +1,6 @@
 function doPost(e) {
     try {
         // ポストデータを取得
-        // 形式は以下の通り
-        /**
-         *  data = {
-         *    user?: {
-         *      id: string,
-         *      name: string,
-         *      nameJp: string,
-         *      mail: string,
-         *      password: string
-         *    },
-         *    record?: {
-         *      id?: string,
-         *      userID: string,
-         *      realTime: number,
-         *      inGameTime: number,
-         *      category: string,
-         *      difficulty: string,
-         *      version: string,
-         *      turbo: boolean,
-         *      submissionDate: string,
-         *      comment: string,
-         *      proofLinks: string[],
-         *      verified: boolean
-         *    },
-         *    verifyInfo?: {
-         *      token: string
-         *    }, ...
-         *  }
-         */
         const data = JSON.parse(e.postData.getDataAsString())
 
         // メソッド名を取得

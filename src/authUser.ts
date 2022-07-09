@@ -1,12 +1,12 @@
-function authUser(authinfo: AuthInfo, header?: any[], table?: any[][]): [boolean, UserInfo?] {
+function authUser(authinfo: AuthInfo, header?: any[], contents?: any[][]): [boolean, UserInfo?] {
     const identifier: string = authinfo.identifier;
     const password: string = authinfo.password;
 
     if (header === undefined) {
-        const sheet = SpreadsheetApp.openById(SHEET_ID_USER).getSheets()[0];
+        const table = SpreadsheetApp.openById(SHEET_ID_USER).getSheets()[0].getDataRange().getValues();
 
-        header = sheet.getDataRange().getValues().slice(0, 1)[0];
-        table = sheet.getDataRange().getValues().slice(1);
+        header = table.slice(0, 1)[0];
+        contents = table.slice(1);
     }
 
     const SHEET_USER_ID_LABEL_INDEX = header.indexOf(SHEET_USER_ID_LABEL);
@@ -16,9 +16,9 @@ function authUser(authinfo: AuthInfo, header?: any[], table?: any[][]): [boolean
 
     // 識別子がメールアドレスかどうかで行を取得
     if (MAILADDRESS_REGEX.test(identifier)) {
-        infoRow = table.find(row => row[SHEET_USER_MAIL_LABEL_INDEX] === identifier);
+        infoRow = contents.find(row => row[SHEET_USER_MAIL_LABEL_INDEX] === identifier);
     } else {
-        infoRow = table.find(row => row[SHEET_USER_ID_LABEL_INDEX] === identifier);
+        infoRow = contents.find(row => row[SHEET_USER_ID_LABEL_INDEX] === identifier);
     }
 
     if (infoRow === undefined) {

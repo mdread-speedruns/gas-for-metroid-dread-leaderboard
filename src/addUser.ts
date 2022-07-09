@@ -11,7 +11,6 @@ function addUser(data: DoPostData): PostStatusResponder {
 
         // パスワードが要件を満たさない場合、エラーを返す
 
-
         const passwordHashed: string = convertDataToSha256Hash(password, PASSWORD_STRETCHING_TIMES, id);
         const verifyToken: string = Utilities.getUuid();
         const registeredDate: string = new Date().toISOString();
@@ -155,5 +154,5 @@ function addUserExample(): void {
         }
     };
     const result = addRecord(data);
-    Logger.log(result);
+    console.log(result);
 }
