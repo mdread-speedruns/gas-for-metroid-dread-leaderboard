@@ -153,6 +153,6 @@ function addUserExample(): void {
             password: "12345678"
         }
     };
-    const result = addRecord(data);
+    const result = addUser(data);
     console.log(result);
 }

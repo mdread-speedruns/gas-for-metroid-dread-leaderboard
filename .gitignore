@@ -135,3 +135,6 @@ memo.html
 docs/.obsidian/
 .clasp.json
 temp/
+creds.json
+token.json
+test.py
