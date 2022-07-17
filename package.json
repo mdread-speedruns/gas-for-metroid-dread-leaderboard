@@ -7,7 +7,11 @@
     "lint": "prettier './src/**/*.{js,ts}' && eslint './src/**/*.{js,ts}'",
     "lintfix": "prettier --write './src/**/*.{js,ts}' && eslint --fix './src/**/*.{js,ts}'",
     "push": "yarn lintfix && cp appsscript.json dist/appsscript.json && tsc && clasp push -f",
-    "deploy": "yarn push && clasp deploy -i AKfycbyqx02VzLElvtJCtKALN-IrO9DXhqgo1mvX-1bMhQUI6CPXb3LTaic9bS5NR22uhcnv"
+    "deploy": "yarn push && clasp deploy -i AKfycbyqx02VzLElvtJCtKALN-IrO9DXhqgo1mvX-1bMhQUI6CPXb3LTaic9bS5NR22uhcnv",
+    "link:dev": "npm ln -s .clasp.dev.json .clasp.json",
+    "link:prod": "npm ln -s .clasp.prod.json .clasp.json",
+    "push:dev": "npm run link:dev && clasp push",
+    "push:prod": "npm run link:prod && clasp push"
   },
   "repository": {
     "type": "git",
