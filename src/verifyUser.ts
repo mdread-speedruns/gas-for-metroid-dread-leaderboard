@@ -1,4 +1,4 @@
-function verifyUser(data: DoPostData): PostStatusResponder {
+function verifyUser(data: VerifyUserData): PostStatusResponder {
     try {
         const verifyInfo: VerifyInfo = data.verifyInfo;
         const authInfo: AuthInfo = data.authInfo;
@@ -9,8 +9,12 @@ function verifyUser(data: DoPostData): PostStatusResponder {
 
         // 適正ユーザーかどうかを確かめる
         const [isProperUser, userInfo] = authUser(authInfo, header, table);
-        if (!isProperUser) {
-            throw new Error("unproper infomation: is ID or Password correct?");
+        if (!isProperUser && userInfo === null) {
+            throw new Error("Unproper infomation: Is ID or Password correct?");
+        }
+
+        if (isProperUser) {
+            throw new Error("Already verified");
         }
 
         const token: string = verifyInfo.token;
@@ -31,23 +35,30 @@ function verifyUser(data: DoPostData): PostStatusResponder {
             throw new Error("Your registered data was not found. Please re-register your infomation")
         }
 
+        // 承認用トークンが一致しているかを判定する
+        if (token !== table[indexOfInfoRow][SHEET_USER_VERIFY_TOKEN_LABEL_INDEX]) {
+            throw new Error("Incorrect token")
+        }
+
         table[indexOfInfoRow][SHEET_USER_VERIFIED_LABEL_INDEX] = true
         table[indexOfInfoRow][SHEET_USER_VERIFY_TOKEN_LABEL_INDEX] = ""
 
         sheet.getDataRange().setValues([header].concat(table));
 
         const result: PostStatusResponder = {
-            status: 'success',
+            status: STATUS_SUCCESS,
             message: "successfully verified",
             data: {
                 userInfo: userInfo
             }
         }
+
         return result;
+
     } catch (error) {
         console.log(error)
         const result: PostStatusResponder = {
-            status: 'error',
+            status: STATUS_ERROR,
             message: error.message,
         }
         return result;

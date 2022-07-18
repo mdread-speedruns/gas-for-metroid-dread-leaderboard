@@ -1,6 +1,6 @@
 // 記録を追加する
 // 未承認記録を想定するので、IDを指定しても破棄されるので注意
-function addRecord(data: DoPostData): PostStatusResponder {
+function addRecord(data: AddRecordData): PostStatusResponder {
     try {
         const recordinfo: RecordInfo = data.recordInfo;
         const authinfo: AuthInfo = data.authInfo;
@@ -117,7 +117,7 @@ function addRecord(data: DoPostData): PostStatusResponder {
         }
 
         const result: PostStatusResponder = {
-            status: 'success',
+            status: STATUS_SUCCESS,
             message: 'The run has been added successfully.',
             data: {
                 recordInfo: {
@@ -142,7 +142,7 @@ function addRecord(data: DoPostData): PostStatusResponder {
     } catch (error) {
         Logger.log(error)
         const result: PostStatusResponder = {
-            status: 'error',
+            status: STATUS_ERROR,
             message: error.message,
         }
 
@@ -152,7 +152,7 @@ function addRecord(data: DoPostData): PostStatusResponder {
 
 
 function addRecordExample(): void {
-    const data: DoPostData = {
+    const data: AddRecordData = {
         authInfo: {
             identifier: "test123456",
             password: "12345678"
@@ -168,7 +168,7 @@ function addRecordExample(): void {
             submissionDate: "test",
             comment: "test",
             proofLinks: ["url1", "url2"],
-            verified: true
+            verified: false
         }
     };
     const result = addRecord(data);

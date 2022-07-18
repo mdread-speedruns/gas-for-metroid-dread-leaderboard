@@ -1,4 +1,4 @@
-function deleteRecord(data: DoPostData): PostStatusResponder {
+function deleteRecord(data: DeleteRecordData): PostStatusResponder {
     try {
         const deleteIdentifierInfo: DeleteIdentifierInfo = data.deleteIdentifierInfo;
         const authinfo: AuthInfo = data.authInfo;
@@ -68,7 +68,7 @@ function deleteRecord(data: DoPostData): PostStatusResponder {
             });
 
             const result: PostStatusResponder = {
-                status: 'success',
+                status: STATUS_SUCCESS,
                 message: 'The run has been added successfully.',
                 data: {
                     recordInfo: {
@@ -96,7 +96,7 @@ function deleteRecord(data: DoPostData): PostStatusResponder {
     } catch (error) {
         Logger.log(error)
         const result: PostStatusResponder = {
-            status: 'error',
+            status: STATUS_ERROR,
             message: error.message,
         }
         return result;
@@ -105,7 +105,11 @@ function deleteRecord(data: DoPostData): PostStatusResponder {
 
 
 function deleteRecordExample(): void {
-    const data: DoPostData = {
+    const data: AddRecordData = {
+        authInfo: {
+            identifier: "test",
+            password: "12345678"
+        },
         recordInfo: {
             userId: "test123456",
             realTime: 1234.5,
@@ -113,17 +117,17 @@ function deleteRecordExample(): void {
             category: "test",
             difficulty: "test",
             version: "test",
-            turbo: true,
-            submissionDate: "test",
+            turbo: false,
+            submissionDate: new Date().toDateString(),
             comment: "test",
             proofLinks: ["url1", "url2"],
-            verified: true
+            verified: false
         }
     };
     const result = addRecord(data);
 
     const id = result.data.recordInfo.id;
-    const data2: DoPostData = {
+    const data2: DeleteRecordData = {
         authInfo: {
             identifier: "test",
             password: "12345678"

@@ -1,3 +1,4 @@
+// ユーザーを認証・認可するメソッド
 function authUser(authinfo: AuthInfo, header?: any[], contents?: any[][]): [boolean, UserInfo?] {
     const identifier: string = authinfo.identifier;
     const password: string = authinfo.password;
@@ -33,6 +34,10 @@ function authUser(authinfo: AuthInfo, header?: any[], contents?: any[][]): [bool
     const SHEET_USER_NAME_LABEL_INDEX = header.indexOf(SHEET_USER_NAME_LABEL);
     const SHEET_USER_NAME_JP_LABEL_INDEX = header.indexOf(SHEET_USER_NAME_JP_LABEL);
     const SHEET_USER_MAIL_LABEL_INDEX = header.indexOf(SHEET_USER_MAIL_LABEL);
+    const SHEET_USER_VERIFIED_LABEL_INDEX = header.indexOf(SHEET_USER_VERIFIED_LABEL);
+
+    // 未承認ユーザーは制限付きで認可
+    const verified = infoRow[SHEET_USER_VERIFIED_LABEL_INDEX]
 
     const info: UserInfo = {
         id: infoRow[SHEET_USER_ID_LABEL_INDEX],
@@ -42,5 +47,5 @@ function authUser(authinfo: AuthInfo, header?: any[], contents?: any[][]): [bool
         password: password
     }
 
-    return [true, info]
+    return [verified, info]
 }

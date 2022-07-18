@@ -1,5 +1,5 @@
-## usage
-
+# API for metroid dread leaderboard
+## Usage
 ### Post
 
 ```python
@@ -13,9 +13,93 @@ response = requests.post(
         DEPLOY_ID=DEPLOY_ID,
         METHOD_NAME=METHOD_NAME
     ),
-    data={'foo': 'bar'}
+    data={
+        # You need to load required objects along the method
+        # 
+        # < Example >
+        # 
+        #   METHOD_NAME=addRecord
+        #   -> Requires: RecordInfo, AuthInfo
+
+        # for AuthN & AuthZ user
+        'authInfo': {
+            'identifier': string, # user id or email
+            'password': string    # password
+        },
+        # for adding user's info
+        'userInfo': {
+            'id': string,       # large/small letter and digit are usable
+                                # 8 ~ 64 letters are required
+            'name': string,     # display name
+            'nameJp': string,   # optional
+            'mail': string,     # mail address
+            'password': string  # one or more large/small letter and digit are required
+                                # 8 ~ 64 letters are also needed
+        },
+        # for adding record's info
+        'recordInfo': {
+            userId: string,         # user's id
+            realTime: number,       # RTA-based time
+            inGameTime: number,     # In game based time
+            category: string,       # Any, 100, ...
+            difficulty: string,     # Normal, Hard, ...
+            version: string,        # 1.0.0, ...
+            turbo: boolean,         # 
+            submissionDate: string, # date string
+                                    # convert into ISO format
+            comment: string,        # 
+            proofLinks: string[],   # 
+            verified: boolean       # always false
+        },
+        # used by delete user/record
+        'deleteIdentifierInfo': {
+            identifier: string      # identifier to delete data
+                                    # you can use:
+                                    #   deleteUser: user's id or email
+                                    #   deleteRecord: record' id
+        },
+    }
 )
+
+# RETURNS:
+# {
+#     'status': string,
+#     'message': string,
+#     'data': {
+#         'userInfo': UserInfo,
+#         'verifyInfo': VerifyInfo,
+#         'recordInfo': RecordInfo
+#         'deleteIdentifierInfo': DeleteIdentifierInfo,
+#     }
+# };
 ```
+
+Put a common interface on the data to be POSTed.
+The following is a summary of each method and a list of interfaces required by the method
+
+#### addUser
+Requires: `userInfo`
+
+Add an unapproved user and send them an email for approval
+
+
+#### addRecord
+Requires: `authInfo`, `recordInfo`
+
+Add an unapproved record
+
+
+#### deleteUser
+Requires: `authInfo`, `deleteIdentifierInfo`
+
+Delete an user
+
+
+#### deleteRecord
+Requires: `authInfo`, `deleteIdentifierInfo`
+
+Delete a record
+
 
 ### Get
 
@@ -29,7 +113,6 @@ requests.get(
 ```
 
 ## example
-
 ### add a new user
 
 ```python
@@ -64,7 +147,7 @@ requests.post(
 )
 ```
 
-### delete User
+### delete an user
 
 ```python
 requests.post(
@@ -130,7 +213,6 @@ requests.post(
 
 
 ## GET
-
 ### get Users
 
 ```python
@@ -148,4 +230,3 @@ requests.get(
     }
 )
 ```
-

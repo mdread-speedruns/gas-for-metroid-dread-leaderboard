@@ -1,4 +1,4 @@
-function deleteUser(data: DoPostData): PostStatusResponder {
+function deleteUser(data: DeleteUserData): PostStatusResponder {
     try {
         const deleteIdentifierInfo: DeleteIdentifierInfo = data.deleteIdentifierInfo;
         const authinfo: AuthInfo = data.authInfo;
@@ -39,7 +39,7 @@ function deleteUser(data: DoPostData): PostStatusResponder {
         const SHEET_USER_MAIL_LABEL_INDEX = header.indexOf(SHEET_USER_MAIL_LABEL)
 
         const result: PostStatusResponder = {
-            status: 'success',
+            status: STATUS_SUCCESS,
             message: 'The run has been deleted successfully.',
             data: {
                 userInfo: {
@@ -57,7 +57,7 @@ function deleteUser(data: DoPostData): PostStatusResponder {
     } catch (error) {
         Logger.log(error)
         const result: PostStatusResponder = {
-            status: 'error',
+            status: STATUS_ERROR,
             message: error.message,
         }
         return result;
@@ -66,7 +66,7 @@ function deleteUser(data: DoPostData): PostStatusResponder {
 
 
 function deleteUserExample(): void {
-    const data: DoPostData = {
+    const data: AddUserData = {
         userInfo: {
             id: "test81345",
             name: "testman",
@@ -77,7 +77,7 @@ function deleteUserExample(): void {
     };
     const result = addUser(data);
 
-    const data2: DoPostData = {
+    const data2: DeleteUserData = {
         authInfo: {
             identifier: "test81345",
             password: "12345678"

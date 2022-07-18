@@ -23,7 +23,7 @@ function getUsers(data: DoGetParams): GetStatusResponder {
         }
 
         const result: GetStatusResponder = {
-            status: 'success',
+            status: STATUS_SUCCESS,
             message: 'Runs are found successfully.',
             data: {
                 userInfo: usersInfo
@@ -33,7 +33,7 @@ function getUsers(data: DoGetParams): GetStatusResponder {
     } catch (error) {
         Logger.log(error)
         const result: GetStatusResponder = {
-            status: 'error',
+            status: STATUS_ERROR,
             message: error.message,
         }
         return result;

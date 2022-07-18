@@ -40,11 +40,17 @@ const GET_METHODS = {
     getUsers: 'getUsers'
 }
 
+const STATUS_SUCCESS = "Success"
+const STATUS_ERROR = "Error"
+
 // メールアドレスの正規表現
 const MAILADDRESS_REGEX = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 // パスワードの条件用正規表現
-const PASSWORD_REGEX = /^[a-zA-Z0-9.?/-]{8,64}$/
+// 小文字の半角アルファベット、半角数字を最低1文字以上含む
+const PASSWORD_REGEX = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,64}$/
 const PASSWORD_MAX_RETRY = 5
+// ユーザーIDの条件用正規表現
+const USER_ID_REGEX = /^[a-zA-Z\d]{8,64}$/
 
 // アカウント認証用
 type AuthInfo = {
@@ -83,19 +89,36 @@ type RecordInfo = {
     difficulty: string,
     version: string,
     turbo: boolean,
-    submissionDate: string,
+    submissionDate: string, // iso-string を判定する仕組みを作らなければならない
     comment: string,
     proofLinks: string[],
     verified: boolean
 };
 
-type DoPostData = {
-    authInfo?: AuthInfo,
-    userInfo?: UserInfo,
-    verifyInfo?: VerifyInfo,
-    recordInfo?: RecordInfo
-    deleteIdentifierInfo?: DeleteIdentifierInfo,
-};
+// 各POSTメソッドが要するデータ
+type AddUserData = {
+    userInfo: UserInfo,
+}
+
+type AddRecordData = {
+    authInfo: AuthInfo,
+    recordInfo: RecordInfo,
+}
+
+type VerifyUserData = {
+    authInfo: AuthInfo,
+    verifyInfo: VerifyInfo
+}
+
+type DeleteUserData = {
+    authInfo: AuthInfo,
+    deleteIdentifierInfo: DeleteIdentifierInfo,
+}
+
+type DeleteRecordData = {
+    authInfo: AuthInfo,
+    deleteIdentifierInfo: DeleteIdentifierInfo,
+}
 
 type DoGetParams = {
     // getRecords: IDを絞る(unused)
