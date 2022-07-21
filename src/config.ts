@@ -81,7 +81,6 @@ type DeleteIdentifierInfo = {
 };
 
 type RecordInfo = {
-    id?: string
     userId: string,
     realTime: number,
     inGameTime: number,
@@ -89,10 +88,13 @@ type RecordInfo = {
     difficulty: string,
     version: string,
     turbo: boolean,
-    submissionDate: string, // iso-string を判定する仕組みを作らなければならない
     comment: string,
     proofLinks: string[],
-    verified: boolean
+
+    // 返り値専用
+    id?: string,             // UUID
+    submissionDate?: string, // ISO-format
+    verified?: boolean,
 };
 
 // 各POSTメソッドが要するデータ

@@ -34,6 +34,9 @@ function deleteUser(data: DeleteUserData): PostStatusResponder {
         // 消去実行
         sheet.deleteRow(rowIndexOfId + 2);
 
+        const _result: [boolean, number] = deleteRecordsBelongsToUser(userInfo.id);
+        console.log(_result);
+
         const SHEET_USER_NAME_LABEL_INDEX = header.indexOf(SHEET_USER_NAME_LABEL)
         const SHEET_USER_NAME_JP_LABEL_INDEX = header.indexOf(SHEET_USER_NAME_JP_LABEL)
         const SHEET_USER_MAIL_LABEL_INDEX = header.indexOf(SHEET_USER_MAIL_LABEL)
@@ -64,6 +67,47 @@ function deleteUser(data: DeleteUserData): PostStatusResponder {
     }
 }
 
+function deleteRecordsBelongsToUser(userId: string): [boolean, number] {
+    try {
+        // シートのIDを取得
+        let sheetIds: string[] = [SHEET_ID_RECORD, SHEET_ID_UNVERIFIED_RECORD];
+
+        for (const sheetId of sheetIds) {
+            // シートの取得
+            const sheet = SpreadsheetApp.openById(sheetId).getSheets()[0];
+            const header = sheet.getDataRange().getValues().slice(0, 1)[0];
+            const table = sheet.getDataRange().getValues().slice(1);
+
+            const SHEET_RECORD_RUNNER_ID_LABEL_INDEX = header.indexOf(SHEET_RECORD_USER_ID_LABEL);
+
+            // 記録が保存されていない複数行を取得
+            const rowsOfRecord = table.filter(row => row[SHEET_RECORD_RUNNER_ID_LABEL_INDEX] !== userId);
+
+            // 記録が見つからなかった場合
+            if (rowsOfRecord.length === table.length) {
+                continue;
+            }
+
+            // 空白行埋め
+            for (let i = rowsOfRecord.length; i < table.length; i++) {
+                rowsOfRecord.push(Array(header.length))
+
+            }
+
+            // 続いて記録動画の削除
+            // …でも参照されないからアーカイブ的に残してあってもいいんじゃない？
+
+            return [true, table.length - rowsOfRecord.length];
+        }
+
+        throw new Error("The run has been not found.")
+
+    } catch (error) {
+        Logger.log(error)
+        return [false, 0];
+    }
+}
+
 
 function deleteUserExample(): void {
     const data: AddUserData = {
@@ -91,3 +135,4 @@ function deleteUserExample(): void {
     Logger.log(result);
     Logger.log(result2);
 }
+

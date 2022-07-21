@@ -4,14 +4,8 @@
   "description": "gas project for metroid dread leaderboard",
   "main": "index.js",
   "scripts": {
-    "lint": "prettier './src/**/*.{js,ts}' && eslint './src/**/*.{js,ts}'",
-    "lintfix": "prettier --write './src/**/*.{js,ts}' && eslint --fix './src/**/*.{js,ts}'",
-    "push": "yarn lintfix && cp appsscript.json dist/appsscript.json && tsc && clasp push -f",
-    "deploy": "yarn push && clasp deploy -i AKfycbyqx02VzLElvtJCtKALN-IrO9DXhqgo1mvX-1bMhQUI6CPXb3LTaic9bS5NR22uhcnv",
-    "link:dev": "npm ln -s .clasp.dev.json .clasp.json",
-    "link:prod": "npm ln -s .clasp.prod.json .clasp.json",
-    "push:dev": "npm run link:dev && clasp push",
-    "push:prod": "npm run link:prod && clasp push"
+    "deploy:prod": "clasp push && clasp deploy -i AKfycbzIR81OwuV3c6X9TEUrfmYcJBnCPAW7O0I5xpSZD4YFnO_mVse-A7VSH1-C1uLx2NjG -d Prod",
+    "deploy:dev": "clasp push && clasp deploy -i AKfycbzyV0nyHk0qSeNygxOd1Ny7RRgoZzOEJy9cbtBy9W9Vf8lJWqU8B82nFpvOZ4AAXKkJ -d Dev"
   },
   "repository": {
     "type": "git",

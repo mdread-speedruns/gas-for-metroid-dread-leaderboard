@@ -41,7 +41,7 @@ function deleteRecord(data: DeleteRecordData): PostStatusResponder {
             const rowOfRecord = table.find(row => row[SHEET_RECORD_ID_LABEL_INDEX] === id);
 
             // 記録が見つからなかった場合
-            if (rowOfRecord !== undefined) {
+            if (rowOfRecord === undefined) {
                 continue
             }
 
@@ -118,10 +118,8 @@ function deleteRecordExample(): void {
             difficulty: "test",
             version: "test",
             turbo: false,
-            submissionDate: new Date().toDateString(),
             comment: "test",
             proofLinks: ["url1", "url2"],
-            verified: false
         }
     };
     const result = addRecord(data);

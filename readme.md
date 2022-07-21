@@ -45,8 +45,6 @@ response = requests.post(
             difficulty: string,     # Normal, Hard, ...
             version: string,        # 1.0.0, ...
             turbo: boolean,         # 
-            submissionDate: string, # date string
-                                    # convert into ISO format
             comment: string,        # 
             proofLinks: string[],   # 
             verified: boolean       # always false

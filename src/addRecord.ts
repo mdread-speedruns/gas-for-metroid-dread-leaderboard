@@ -12,17 +12,8 @@ function addRecord(data: AddRecordData): PostStatusResponder {
         const difficulty: string = recordinfo.difficulty;
         const version: string = recordinfo.version;
         const turbo: boolean = recordinfo.turbo;
-        const submissionDate: string = recordinfo.submissionDate;
         const comment: string = recordinfo.comment;
         const proofLinks: string[] = recordinfo.proofLinks;
-        const verified: boolean = recordinfo.verified;
-
-        // 承認済みの記録はこのメソッドから追加できない
-        // 承認はモデレーターが他の手段（あるいはメソッド）
-        // を通じて行う為、必ずエラーを返す
-        if (verified) {
-            throw new Error("You cannot add verified record by 'addRecord.'");
-        }
 
         // 適正ユーザーかどうかを確かめる
         const [isProperUser, userInfo] = authUser(authinfo);
@@ -37,6 +28,12 @@ function addRecord(data: AddRecordData): PostStatusResponder {
 
         // レコードのIDを生成
         const recordID: string = Utilities.getUuid();
+        // 提出日はここで決定
+        const submissionDate: string = Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd'T'HH:mm:ss'Z'");
+        // 承認済みの記録はこのメソッドから追加できない
+        // 承認はモデレーターが他の手段（あるいはメソッド）を通じて行う
+        const verified: boolean = false;
+
 
         // シートを取得
         const sheet = SpreadsheetApp.openById(SHEET_ID_UNVERIFIED_RECORD).getSheets()[0];
@@ -165,7 +162,6 @@ function addRecordExample(): void {
             difficulty: "test",
             version: "test",
             turbo: true,
-            submissionDate: "test",
             comment: "test",
             proofLinks: ["url1", "url2"],
             verified: false
