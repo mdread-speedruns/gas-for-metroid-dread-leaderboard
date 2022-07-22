@@ -4,8 +4,7 @@
   "description": "gas project for metroid dread leaderboard",
   "main": "index.js",
   "scripts": {
-    "deploy:prod": "clasp push && clasp deploy -i AKfycbzIR81OwuV3c6X9TEUrfmYcJBnCPAW7O0I5xpSZD4YFnO_mVse-A7VSH1-C1uLx2NjG -d Prod",
-    "deploy:dev": "clasp push && clasp deploy -i AKfycbzyV0nyHk0qSeNygxOd1Ny7RRgoZzOEJy9cbtBy9W9Vf8lJWqU8B82nFpvOZ4AAXKkJ -d Dev"
+    "update": "clasp push && clasp deploy -i AKfycbw2bcLYmDU0gG87zjxi7KvQzQbWVvoh5gvNDc3He8HvMk1-YtKeshadr9zaPfzWMSd0XQ -d 'New Version'"
   },
   "repository": {
     "type": "git",

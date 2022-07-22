@@ -1,3 +1,17 @@
+const ScriptProperty = PropertiesService.getScriptProperties();
+
+const SHEET_ID_USER = ScriptProperty.getProperty("SHEET_ID_USER");
+const SHEET_ID_USERS_RECORD = ScriptProperty.getProperty("SHEET_ID_USERS_RECORD");
+const SHEET_ID_PROOF_LINK = ScriptProperty.getProperty("SHEET_ID_PROOF_LINK");
+const SHEET_ID_RECORD = ScriptProperty.getProperty("SHEET_ID_RECORD");
+const SHEET_ID_UNVERIFIED_RECORD = ScriptProperty.getProperty("SHEET_ID_UNVERIFIED_RECORD");
+const SHEET_ID_CATEGORY_CONFIGULATION = ScriptProperty.getProperty("SHEET_ID_CATEGORY_CONFIGULATION");
+const SHEET_ID_CATEGORY_CONFIGULATION_SRC = ScriptProperty.getProperty("SHEET_ID_CATEGORY_CONFIGULATION_SRC");
+const SHEET_ID_CATEGORY_CONFIGULATION_SRC_CE = ScriptProperty.getProperty("SHEET_ID_CATEGORY_CONFIGULATION_SRC_CE");
+
+const DEPLOY_ID = 'AKfycbw2bcLYmDU0gG87zjxi7KvQzQbWVvoh5gvNDc3He8HvMk1-YtKeshadr9zaPfzWMSd0XQ';
+const URL_BASE = `https://script.google.com/macros/s/${DEPLOY_ID}/exec`;
+
 const SHEET_USER_ID_LABEL = 'id';
 const SHEET_USER_NAME_LABEL = 'name';
 const SHEET_USER_NAME_JP_LABEL = 'nameJp';
@@ -28,16 +42,16 @@ const PASSWORD_STRETCHING_TIMES = 1000;
 const PASSWORD_SALT_ITEM_COL_LABEL = SHEET_USER_ID_LABEL;
 
 const POST_METHODS = {
-    addUser: 'addUser',
-    verifyUser: 'verifyUser',
-    addRecord: 'addRecord',
-    deleteUser: 'deleteUser',
-    deleteRecord: 'deleteRecord'
+    addUser: addUser,
+    verifyUser: verifyUser,
+    addRecord: addRecord,
+    deleteUser: deleteUser,
+    deleteRecord: deleteRecord
 }
 
 const GET_METHODS = {
-    getRecords: 'getRecords',
-    getUsers: 'getUsers'
+    getRecords: getRecords,
+    getUsers: getUsers
 }
 
 const STATUS_SUCCESS = "Success"

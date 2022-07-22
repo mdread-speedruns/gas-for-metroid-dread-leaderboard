@@ -21,7 +21,7 @@ function doGet(e) {
     catch (e) {
         const result: GetStatusResponder = {
             status: STATUS_ERROR,
-            message: "doGet Error has been occured"
+            message: e.message
         };
         const payload = ContentService
             .createTextOutput(JSON.stringify(result))
