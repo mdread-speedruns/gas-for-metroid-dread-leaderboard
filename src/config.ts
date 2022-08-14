@@ -66,6 +66,24 @@ const PASSWORD_MAX_RETRY = 5
 // ユーザーIDの条件用正規表現
 const USER_ID_REGEX = /^[a-zA-Z\d]{8,64}$/
 
+// ユーザー認証用トークンの最大桁数
+const MAX_TOKEN_DIGITS_FOR_USER_VERIFYING = 6;
+// ユーザー認証用トークンのメールボディを返す
+const MAIL_BODY_FOR_USER_VERIFYING = (userName, token) => `<!DOCTYPE html>
+<html>
+  <head>
+    <title>[Metroid Dread Leaderboard Team] Register Token</title>
+  </head>
+  <body style="color: #303030; padding: 8px">
+    <p>
+      <span style="font-family: Roboto, sans-serif; font-size: 16px;">
+        <p>Hi ${userName},</token>
+        <p>Your register token is <strong>${token}</strong>. It will be discarded in an hour.</p>
+      </span>
+    </p>
+  </body>
+</html>`
+
 // アカウント認証用
 type AuthInfo = {
     identifier: string, // id or mail

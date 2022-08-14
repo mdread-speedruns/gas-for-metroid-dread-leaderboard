@@ -65,16 +65,17 @@ function getRecords(data: DoGetParams): GetStatusResponder {
                     verified: sheetId === SHEET_ID_RECORD
                 })
             }
+        }
 
-            const result: GetStatusResponder = {
-                status: STATUS_SUCCESS,
-                message: 'Runs are found successfully.',
-                data: {
-                    recordInfo: recordsInfo
-                }
+        const result: GetStatusResponder = {
+            status: STATUS_SUCCESS,
+            message: 'Runs are found successfully.',
+            data: {
+                recordInfo: recordsInfo
             }
         }
 
+        return result;
 
     } catch (error) {
         Logger.log(error)

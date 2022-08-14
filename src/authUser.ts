@@ -1,5 +1,5 @@
 // ユーザーを認証・認可するメソッド
-function authUser(authinfo: AuthInfo, header?: any[], contents?: any[][]): [boolean, UserInfo?] {
+function authUser(authinfo: AuthInfo, header?: any[], contents?: any[][]): [boolean, UserInfo] {
     const identifier: string = authinfo.identifier;
     const password: string = authinfo.password;
 
@@ -23,12 +23,12 @@ function authUser(authinfo: AuthInfo, header?: any[], contents?: any[][]): [bool
     }
 
     if (infoRow === undefined) {
-        return [false]
+        return [false, null]
     }
 
     const passwordHashed = convertDataToSha256Hash(password, PASSWORD_STRETCHING_TIMES, identifier);
     if (infoRow[SHEET_USER_PASSWORD_LABEL_INDEX] !== passwordHashed) {
-        return [false]
+        return [false, null]
     }
 
     const SHEET_USER_NAME_LABEL_INDEX = header.indexOf(SHEET_USER_NAME_LABEL);

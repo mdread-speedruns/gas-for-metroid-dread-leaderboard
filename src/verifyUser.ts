@@ -19,7 +19,7 @@ function verifyUser(data: VerifyUserData): PostStatusResponder {
 
         const token: string = verifyInfo.token;
         const id: string = userInfo.id;
-        const password: string = userInfo.password;
+        // const password: string = userInfo.password;
 
         // 適正ユーザーなので承認
         // ヘッダー用インデックス
@@ -63,4 +63,17 @@ function verifyUser(data: VerifyUserData): PostStatusResponder {
         }
         return result;
     }
+}
+function verifyUserExample() {
+    const token = ""
+    const data: VerifyUserData = {
+        verifyInfo: {
+            token: token
+        },
+        authInfo: {
+            identifier: "test",
+            password: "12345678"
+        }
+    }
+    console.log(verifyUser(data));
 }

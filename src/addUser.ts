@@ -10,9 +10,25 @@ function addUser(data: AddUserData): PostStatusResponder {
         const password: string = userinfo.password;
 
         // パスワードが要件を満たさない場合、エラーを返す
+        if (!testPassword(password)) {
+            throw new Error("Invalid Password: contains at least one lowercase one-byte alphabet and one-byte number");
+        }
 
         const passwordHashed: string = convertDataToSha256Hash(password, PASSWORD_STRETCHING_TIMES, id);
-        const verifyToken: string = Utilities.getUuid();
+
+        // ランダムな数字の文字列 MAX_TOKEN_DIGITS_FOR_USER_VERIFYING 桁を生成する
+        const randomNumberGenerator = (digits: number) => {
+            let result: string = "";
+            for (let i = 0; i < digits; i++) {
+                // 0~9の数字を生成
+                const value: number = Math.floor(Math.random() * 10);
+                result += value.toString();
+            }
+
+            return result;
+        }
+
+        const verifyToken: string = randomNumberGenerator(MAX_TOKEN_DIGITS_FOR_USER_VERIFYING);
         const registeredDate: string = new Date().toISOString();
 
         const sheet = SpreadsheetApp.openById(SHEET_ID_USER).getSheets()[0];
@@ -28,23 +44,26 @@ function addUser(data: AddUserData): PostStatusResponder {
 
         // 同一のメアド所持者がいるか確認
         // メアドが登録されていない場合は新規登録であり、ID重複は不可
-        // IDはそのメアド所持者である限り更新可能
+        // IDはそのメアド所持者で未承認である限り更新可能
         if (indexOfOldInfoRow !== -1) {
             // 既にそのメアドで何らかの情報が登録済みである
 
             // 登録情報を抜き出す
             const oldInfoRow = table[indexOfOldInfoRow];
 
+            // 未承認でないならばエラー
+            const isVerified: boolean = oldInfoRow[SHEET_USER_VERIFIED_LABEL_INDEX];
+            if (isVerified) {
+                throw new Error("you have already verified. for changing your id, you need to post by other method");
+            }
+
             // 要求するIDが他のアカウントで使用済みならエラー
             // 誰かにそのIDが使われているかを取得
             const indexOfTheIDUsedBySomeone = table.findIndex(row => row[SHEET_USER_ID_LABEL_INDEX] === id);
-            const isTheIDUsedBySomeone = indexOfTheIDUsedBySomeone !== -1;
-
-            // 重複するIDを自分が使っているかを取得する
-            const isTheIDUsedByMe = indexOfTheIDUsedBySomeone === indexOfOldInfoRow;
+            const isTheIdUsedBySomeone = indexOfTheIDUsedBySomeone !== -1;
 
             // そのIDを自分以外が使用しているならば、登録させない
-            if (!isTheIDUsedByMe && isTheIDUsedBySomeone) {
+            if (isTheIdUsedBySomeone) {
                 throw new Error("the ID already exists");
             }
         }
@@ -106,13 +125,8 @@ function addUser(data: AddUserData): PostStatusResponder {
         }
 
         // 認証情報を送信するためのメールを作成
-        const mailBody = `
-        <form action="${URL_BASE}?method=verifyUser" method="post">
-        <input type="hidden" name="token" value="${verifyToken}">
-        <input type="submit" value="Verify">
-        </form>
-        `;
-        MailApp.sendEmail(mail, '[Metroid Dread Leaderboard Team] Verify your account', mailBody);
+        const mailBody = MAIL_BODY_FOR_USER_VERIFYING(name, verifyToken)
+        MailApp.sendEmail(mail, '[Metroid Dread Leaderboard Team] Verify your account', "", { name: "Metroid Dread Leaderboard Team", htmlBody: mailBody, noReply: true });
 
         const result: PostStatusResponder = {
             status: STATUS_SUCCESS,
