@@ -13,29 +13,35 @@
  *   }
  * )
  */
-function doPost(e) {
+function doPost(event) {
+    let rawData = null;
+
     try {
+        rawData = event.postData.contents;
         // ポストデータを取得
-        const data = JSON.parse(e.postData.getDataAsString())
+        const data = JSON.parse(rawData)
 
         // メソッド名を取得
-        const methodName: string = e.parameter.method;
+        const methodName: string = event.parameter.method;
         const method = POST_METHODS[methodName];
-        if (!method) {
+
+        if (!method) 
             throw new Error(`Method ( method=${methodName} ) is not supported`);
-        }
 
         const result: PostStatusResponder = method(data);
         const payload = ContentService
             .createTextOutput(JSON.stringify(result))
             .setMimeType(ContentService.MimeType.JSON);
+
         return payload;
     }
-    catch (e) {
+    catch (errorEvent) {
+        const message = (`${errorEvent.message}: ${rawData}`) || "Unknown doPost error has been occured";
         const result: PostStatusResponder = {
             status: STATUS_ERROR,
-            message: "doPost Error has been occured"
+            message: message
         };
+
         const payload = ContentService
             .createTextOutput(JSON.stringify(result))
             .setMimeType(ContentService.MimeType.JSON);

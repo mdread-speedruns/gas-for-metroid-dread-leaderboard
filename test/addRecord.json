@@ -1,0 +1,22 @@
+{
+    "authInfo": {
+        "identifier": "hakka.ydy.sub@gmail.com",
+        "password": "471psycygs24"
+    },
+    "recordInfo": {
+        "userId": "agdf_ydy",
+        "realTime": "00:00:00",
+        "inGameTime": "00:00:00",
+        "category": "Any",
+        "difficulty": "Normal",
+        "version": "1.0.0",
+        "turbo": "False",
+        "submissionDate": "2020-01-01",
+        "comment": "my_comment",
+        "proofLinks": [
+            "https//example.com/my_proof_link_1",
+            "https//example.com/my_proof_link_2"
+        ],
+        "verified": "True"
+    }
+}

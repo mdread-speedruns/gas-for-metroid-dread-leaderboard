@@ -13,49 +13,57 @@ response = requests.post(
         DEPLOY_ID=DEPLOY_ID,
         METHOD_NAME=METHOD_NAME
     ),
-    data={
+    json={
         # You need to load required objects along the method
         # 
         # < Example >
         # 
         #   METHOD_NAME=addRecord
         #   -> Requires: RecordInfo, AuthInfo
-
         # for AuthN & AuthZ user
         'authInfo': {
             'identifier': string, # user id or email
-            'password': string    # password
+            'password'  : string  # password
         },
         # for adding user's info
         'userInfo': {
-            'id': string,       # large/small letter and digit are usable
+            'id'      : string, # large/small letter and digit are usable
                                 # 8 ~ 64 letters are required
-            'name': string,     # display name
-            'nameJp': string,   # optional
-            'mail': string,     # mail address
-            'password': string  # one or more large/small letter and digit are required
+            'name'    : string, # display name
+            'nameJp'  : string, # optional
+            'mail'    : string, # mail address
+            'password': string  # one or more small letter and digit are required
                                 # 8 ~ 64 letters are also needed
         },
         # for adding record's info
         'recordInfo': {
-            userId: string,         # user's id
-            realTime: number,       # RTA-based time
-            inGameTime: number,     # In game based time
-            category: string,       # Any, 100, ...
-            difficulty: string,     # Normal, Hard, ...
-            version: string,        # 1.0.0, ...
-            turbo: boolean,         # 
-            comment: string,        # 
-            proofLinks: string[],   # 
-            verified: boolean       # always false
+            userId    : string,   # user's id
+            realTime  : number,   # RTA-based time
+            inGameTime: number,   # In game based time
+            category  : string,   # Any, 100, ...
+            difficulty: string,   # Normal, Hard, ...
+            version   : string,   # 1.0.0, ...
+            turbo     : boolean,  # 
+            comment   : string,   # 
+            proofLinks: string[], # 
+            verified  : boolean   # always false
         },
         # used by delete user/record
         'deleteIdentifierInfo': {
-            identifier: string      # identifier to delete data
-                                    # you can use:
-                                    #   deleteUser: user's id or email
-                                    #   deleteRecord: record' id
+            identifier: string    # identifier to delete data
+                                  # you can use:
+                                  #   deleteUser: user's id or email
+                                  #   deleteRecord: record' id
         },
+        # used for user verifying
+        'verifyInfo': {
+            token: string   # token will be sent when you call
+                            # method 'addUser' and successed
+                            # through email
+        }
+    },
+    header={
+        "Content-Type": "application/json"
     }
 )
 
@@ -78,13 +86,19 @@ The following is a summary of each method and a list of interfaces required by t
 #### addUser
 Requires: `userInfo`
 
-Add an unapproved user and send them an email for approval
+Add an unverified user and send them an email for approval
+
+
+#### verifyUser
+Requires: `authInfo`, `verifyInfo`
+
+Verify an unverified user
 
 
 #### addRecord
 Requires: `authInfo`, `recordInfo`
 
-Add an unapproved record
+Add an unverified record
 
 
 #### deleteUser
@@ -116,7 +130,7 @@ requests.get(
 ```python
 requests.post(
     'https://script.google.com/macros/s/abc.../exec?method=addUser',
-    data = {
+    json = {
         userInfo: {
             id: 'my_id',
             name: 'my_name',
@@ -133,13 +147,13 @@ requests.post(
 ```python
 requests.post(
     'https://script.google.com/macros/s/abc.../exec?method=verifyUser',
-    data={
+    json={
         authInfo: {
             identifier: 'my_id',
             password: 'my_password'
         },
         verifyInfo: {
-            verifiedToken: 'token'
+            verifiedToken: '6_digit_token'
         }
     }
 )
@@ -150,7 +164,7 @@ requests.post(
 ```python
 requests.post(
     'https://script.google.com/macros/s/abc.../exec?method=verifyUser',
-    data={
+    json={
         authInfo: {
             identifier: 'my_id',
             password: 'my_password'
@@ -167,10 +181,10 @@ requests.post(
 ```python
 requests.post(
     'https://script.google.com/macros/s/abc.../exec?method=addRecord',
-    data = {
+    json = {
         authInfo: {
             identifier: 'my_id',
-            password: '12345678'
+            password: '123456ab'
         },
         recordInfo: {
             userId: 'my_id',
@@ -197,7 +211,7 @@ requests.post(
 ```python
 requests.post(
     'https://script.google.com/macros/s/abc.../exec?method=addRecord',
-    data = {
+    json = {
         authInfo: {
             identifier: 'my_id',
             password: '12345678'

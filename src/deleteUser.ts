@@ -15,21 +15,20 @@ function deleteUser(data: DeleteUserData): PostStatusResponder {
 
         // メアドか個人のID
         // どちらかを判定して、認証情報と異なるならばエラー
-        const id: string = deleteIdentifierInfo.identifier;
-        if (MAILADDRESS_REGEX.test(id)) {
-            assert(id === userInfo.mail, "Unproper Info: Is the user yours?")
-        } else {
-            assert(id === userInfo.id, "Unproper Info: Is the user yours?")
-        }
+        const identfier: string = deleteIdentifierInfo.identifier;
+        if (MAILADDRESS_REGEX.test(identfier))
+            assert(identfier === String(userInfo.mail), "Unproper Info: Is the user yours?")
+        else 
+            assert(identfier === String(userInfo.id), "Unproper Info: Is the user yours?")
 
+        const id: string = String(userInfo.id)
         const password: string = authinfo.password;
 
         // 消去するユーザーの行を取得
         const SHEET_USER_ID_LABEL_INDEX = header.indexOf(SHEET_USER_ID_LABEL);
-        const rowIndexOfId = table.findIndex(row => row[SHEET_USER_ID_LABEL_INDEX] === id);
-        if (rowIndexOfId === -1) {
+        const rowIndexOfId = table.findIndex(row => String(row[SHEET_USER_ID_LABEL_INDEX]) === id);
+        if (rowIndexOfId === -1)
             throw new Error(id + ' was not found');
-        }
 
         // 消去実行
         sheet.deleteRow(rowIndexOfId + 2);

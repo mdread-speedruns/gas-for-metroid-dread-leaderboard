@@ -61,14 +61,15 @@ const STATUS_ERROR = "Error"
 const MAILADDRESS_REGEX = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 // パスワードの条件用正規表現
 // 小文字の半角アルファベット、半角数字を最低1文字以上含む
-const PASSWORD_REGEX = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,64}$/
+const PASSWORD_REGEX = /^(?=.*?[a-z])(?=.*?\d)[a-zA-Z\d]{8,64}$/
 const PASSWORD_MAX_RETRY = 5
 // ユーザーIDの条件用正規表現
 const USER_ID_REGEX = /^[a-zA-Z\d]{8,64}$/
 
 // ユーザー認証用トークンの最大桁数
 const MAX_TOKEN_DIGITS_FOR_USER_VERIFYING = 6;
-// ユーザー認証用トークンのメールボディを返す
+// ユーザー認証用トークンのメール整形用関数
+const MAIL_TITLE_FOR_USER_VERIFYING = '[Metroid Dread Leaderboard Team] Verify your account';
 const MAIL_BODY_FOR_USER_VERIFYING = (userName, token) => `<!DOCTYPE html>
 <html>
   <head>
@@ -114,8 +115,8 @@ type DeleteIdentifierInfo = {
 
 type RecordInfo = {
     userId: string,
-    realTime: number,
-    inGameTime: number,
+    realTime: string,
+    inGameTime: string,
     category: string,
     difficulty: string,
     version: string,

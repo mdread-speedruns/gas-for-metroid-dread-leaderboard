@@ -9,13 +9,11 @@ function verifyUser(data: VerifyUserData): PostStatusResponder {
 
         // 適正ユーザーかどうかを確かめる
         const [isProperUser, userInfo] = authUser(authInfo, header, table);
-        if (!isProperUser && userInfo === null) {
-            throw new Error("Unproper infomation: Is ID or Password correct?");
-        }
+        if (!isProperUser && userInfo === null)
+            throw new Error(`Unproper infomation: Is ID or Password correct? (userInfo: ${userInfo})`);
 
-        if (isProperUser) {
+        if (isProperUser) 
             throw new Error("Already verified");
-        }
 
         const token: string = verifyInfo.token;
         const id: string = userInfo.id;
@@ -31,15 +29,14 @@ function verifyUser(data: VerifyUserData): PostStatusResponder {
         const indexOfInfoRow = table.findIndex(row => row[SHEET_USER_ID_LABEL_INDEX] === id);
 
         // 登録情報が無ければ失効しているとみなし、再登録を促す
-        if (indexOfInfoRow === -1) {
+        if (indexOfInfoRow === -1)
             throw new Error("Your registered data was not found. Please re-register your infomation")
-        }
 
         // 承認用トークンが一致しているかを判定する
-        if (token !== table[indexOfInfoRow][SHEET_USER_VERIFY_TOKEN_LABEL_INDEX]) {
-            throw new Error("Incorrect token")
-        }
-
+        const expectedToken = String(table[indexOfInfoRow][SHEET_USER_VERIFY_TOKEN_LABEL_INDEX])
+        if (token !== expectedToken) 
+            throw new Error(`Incorrect token (got: ${token}, expected: ${expectedToken})`)
+        
         table[indexOfInfoRow][SHEET_USER_VERIFIED_LABEL_INDEX] = true
         table[indexOfInfoRow][SHEET_USER_VERIFY_TOKEN_LABEL_INDEX] = ""
 
@@ -61,6 +58,7 @@ function verifyUser(data: VerifyUserData): PostStatusResponder {
             status: STATUS_ERROR,
             message: error.message,
         }
+        
         return result;
     }
 }

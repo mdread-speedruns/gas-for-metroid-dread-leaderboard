@@ -6,8 +6,8 @@ function addRecord(data: AddRecordData): PostStatusResponder {
         const authinfo: AuthInfo = data.authInfo;
 
         const userId: string = recordinfo.userId;
-        const realTime: number = recordinfo.realTime;
-        const inGameTime: number = recordinfo.inGameTime;
+        const realTime: string = recordinfo.realTime;
+        const inGameTime: string = recordinfo.inGameTime;
         const category: string = recordinfo.category;
         const difficulty: string = recordinfo.difficulty;
         const version: string = recordinfo.version;
@@ -33,7 +33,6 @@ function addRecord(data: AddRecordData): PostStatusResponder {
         // 承認済みの記録はこのメソッドから追加できない
         // 承認はモデレーターが他の手段（あるいはメソッド）を通じて行う
         const verified: boolean = false;
-
 
         // シートを取得
         const sheet = SpreadsheetApp.openById(SHEET_ID_UNVERIFIED_RECORD).getSheets()[0];
@@ -80,9 +79,8 @@ function addRecord(data: AddRecordData): PostStatusResponder {
         }
 
         // ヘッダーと不整合を起こす場合はエラー
-        if (newRow.length !== header.length) {
+        if (newRow.length !== header.length)
             throw new Error('new data\'s length is not equal to header\'s. Is the header changed?');
-        }
 
         // 証拠動画を記録
         const sheetProof = SpreadsheetApp.openById(SHEET_ID_PROOF_LINK).getSheets()[0];
@@ -104,9 +102,8 @@ function addRecord(data: AddRecordData): PostStatusResponder {
             newRowProof.push(appender);
         }
 
-        if (newRowProof.length !== proofLinks.length) {
+        if (newRowProof.length !== proofLinks.length)
             throw new Error('new data\'s length is not equal to header\'s. Is the header changed?');
-        }
 
         sheet.appendRow(newRow);
         for (const row of newRowProof) {
@@ -150,21 +147,25 @@ function addRecord(data: AddRecordData): PostStatusResponder {
 
 function addRecordExample(): void {
     const data: AddRecordData = {
-        authInfo: {
-            identifier: "test123456",
-            password: "12345678"
+        "authInfo": {
+            "identifier": "hakka.ydy.sub@gmail.com",
+            "password": "471psycygs24"
         },
-        recordInfo: {
-            userId: "test123456",
-            realTime: 1234.5,
-            inGameTime: 678.9,
-            category: "test",
-            difficulty: "test",
-            version: "test",
-            turbo: true,
-            comment: "test",
-            proofLinks: ["url1", "url2"],
-            verified: false
+        "recordInfo": {
+            "userId": "agdf_ydy",
+            "realTime": "00:00:00",
+            "inGameTime": "00:00:00",
+            "category": "Any",
+            "difficulty": "Normal",
+            "version": "1.0.0",
+            "turbo": false,
+            "submissionDate": "2020-01-01",
+            "comment": "my_comment",
+            "proofLinks": [
+                "https//example.com/my_proof_link_1",
+                "https//example.com/my_proof_link_2"
+            ],
+            "verified": true
         }
     };
     const result = addRecord(data);

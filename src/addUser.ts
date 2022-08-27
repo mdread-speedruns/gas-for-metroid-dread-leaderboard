@@ -51,68 +51,63 @@ function addUser(data: AddUserData): PostStatusResponder {
             // 登録情報を抜き出す
             const oldInfoRow = table[indexOfOldInfoRow];
 
-            // 未承認でないならばエラー
+            // 承認済ならばエラー（また別にアカウントを停止させるメソッドを用意する）
             const isVerified: boolean = oldInfoRow[SHEET_USER_VERIFIED_LABEL_INDEX];
-            if (isVerified) {
+            if (isVerified) 
                 throw new Error("you have already verified. for changing your id, you need to post by other method");
-            }
-
+            
             // 要求するIDが他のアカウントで使用済みならエラー
             // 誰かにそのIDが使われているかを取得
             const indexOfTheIDUsedBySomeone = table.findIndex(row => row[SHEET_USER_ID_LABEL_INDEX] === id);
             const isTheIdUsedBySomeone = indexOfTheIDUsedBySomeone !== -1;
 
             // そのIDを自分以外が使用しているならば、登録させない
-            if (isTheIdUsedBySomeone) {
+            if (isTheIdUsedBySomeone) 
                 throw new Error("the ID already exists");
-            }
         }
         else {
             // 新規登録
             // 単に他のIDで登録済みならアウト
             const indexOfTheIDUsedBySomeone = table.findIndex(row => row[SHEET_USER_ID_LABEL_INDEX] === id);
-            if (indexOfTheIDUsedBySomeone !== -1) {
+            if (indexOfTheIDUsedBySomeone !== -1) 
                 throw new Error("the ID already exists");
-            }
         }
 
         // 登録チェックが終わったので、登録処理をしていく
         const newRow = [];
         for (const label of header) {
-            if (label === SHEET_USER_ID_LABEL) {
+            if (label === SHEET_USER_ID_LABEL) 
                 newRow.push(id);
-            }
-            else if (label === SHEET_USER_NAME_LABEL) {
+            
+            else if (label === SHEET_USER_NAME_LABEL) 
                 newRow.push(name);
-            }
-            else if (label === SHEET_USER_NAME_JP_LABEL) {
+            
+            else if (label === SHEET_USER_NAME_JP_LABEL) 
                 newRow.push(nameJp);
-            }
-            else if (label === SHEET_USER_MAIL_LABEL) {
+            
+            else if (label === SHEET_USER_MAIL_LABEL) 
                 newRow.push(mail);
-            }
-            else if (label === SHEET_USER_PASSWORD_LABEL) {
+            
+            else if (label === SHEET_USER_PASSWORD_LABEL) 
                 newRow.push(passwordHashed);
-            }
-            else if (label === SHEET_USER_VERIFIED_LABEL) {
+            
+            else if (label === SHEET_USER_VERIFIED_LABEL) 
                 newRow.push(false);
-            }
-            else if (label === SHEET_USER_REGISTERED_DATE_LABEL) {
+            
+            else if (label === SHEET_USER_REGISTERED_DATE_LABEL) 
                 newRow.push(registeredDate);
-            }
-            else if (label === SHEET_USER_VERIFY_TOKEN_LABEL) {
+            
+            else if (label === SHEET_USER_VERIFY_TOKEN_LABEL) 
                 newRow.push(verifyToken);
-            }
-            else {
+            
+            else 
                 // ヘッダー行に変更有りとみなされた場合
                 throw new Error('unknown label: ' + label);
-            }
         }
 
         // ヘッダー行に変更有りとみなされた場合
-        if (newRow.length !== header.length) {
+        if (newRow.length !== header.length) 
             throw new Error('new data\'s length is not equal to header\'s. Is header changed?');
-        }
 
         // 情報の追加or更新
         if (indexOfOldInfoRow !== -1) {
@@ -126,7 +121,15 @@ function addUser(data: AddUserData): PostStatusResponder {
 
         // 認証情報を送信するためのメールを作成
         const mailBody = MAIL_BODY_FOR_USER_VERIFYING(name, verifyToken)
-        MailApp.sendEmail(mail, '[Metroid Dread Leaderboard Team] Verify your account', "", { name: "Metroid Dread Leaderboard Team", htmlBody: mailBody, noReply: true });
+        MailApp.sendEmail(
+            mail,
+            MAIL_TITLE_FOR_USER_VERIFYING,
+            "",
+            {
+                name: "Metroid Dread Leaderboard Team",
+                htmlBody: mailBody,
+                noReply: true
+            });
 
         const result: PostStatusResponder = {
             status: STATUS_SUCCESS,
