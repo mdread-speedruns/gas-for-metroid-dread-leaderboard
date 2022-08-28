@@ -5,13 +5,12 @@
     },
     "recordInfo": {
         "userId": "agdf_ydy",
-        "realTime": "00:00:00",
-        "inGameTime": "00:00:00",
+        "realTime": 0.0,
+        "inGameTime": 0.0,
         "category": "Any",
         "difficulty": "Normal",
         "version": "1.0.0",
         "turbo": "False",
-        "submissionDate": "2020-01-01",
         "comment": "my_comment",
         "proofLinks": [
             "https//example.com/my_proof_link_1",
