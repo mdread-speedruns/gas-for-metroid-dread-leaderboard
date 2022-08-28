@@ -4,7 +4,7 @@
   "description": "gas project for metroid dread leaderboard",
   "main": "index.js",
   "scripts": {
-    "update": "clasp push && clasp deploy -i AKfycbw2bcLYmDU0gG87zjxi7KvQzQbWVvoh5gvNDc3He8HvMk1-YtKeshadr9zaPfzWMSd0XQ -d New_Version"
+    "update": "clasp push && clasp deploy -i ${npm_config_deployid} -d New_Version"
   },
   "repository": {
     "type": "git",
