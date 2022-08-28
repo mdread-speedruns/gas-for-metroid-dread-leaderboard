@@ -19,8 +19,8 @@ function verifyUser(data: VerifyUserData): PostStatusResponder {
         const id: string = userInfo.id;
         // const password: string = userInfo.password;
 
-        // 適正ユーザーなので承認
-        // ヘッダー用インデックス
+        // 適正ユーザーであることが確認された
+        // ヘッダー用インデックスを取得
         const SHEET_USER_VERIFIED_LABEL_INDEX = header.indexOf(SHEET_USER_VERIFIED_LABEL)
         const SHEET_USER_VERIFY_TOKEN_LABEL_INDEX = header.indexOf(SHEET_USER_VERIFY_TOKEN_LABEL)
         const SHEET_USER_ID_LABEL_INDEX = header.indexOf(SHEET_USER_ID_LABEL)
@@ -31,6 +31,9 @@ function verifyUser(data: VerifyUserData): PostStatusResponder {
         // 登録情報が無ければ失効しているとみなし、再登録を促す
         if (indexOfInfoRow === -1)
             throw new Error("Your registered data was not found. Please re-register your infomation")
+
+        // 登録から1時間以上が経過している場合、再登録を促す
+        
 
         // 承認用トークンが一致しているかを判定する
         const expectedToken = String(table[indexOfInfoRow][SHEET_USER_VERIFY_TOKEN_LABEL_INDEX])

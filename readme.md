@@ -188,19 +188,18 @@ requests.post(
         },
         recordInfo: {
             userId: 'my_id',
-            realtime: '00:00:00',
-            ingametime: '00:00:00',
+            realtime: 0.0,      # second base
+            ingametime: 0.0,    # second base
             category: 'Any',
             difficulty: 'Normal',
             version: '1.0.0',
-            turbo: 'False',
-            submissiondate: '2020-01-01',
+            turbo: False,
             comment: 'my_comment',
             prooflinks: [
                 'https//example.com/my_proof_link_1',
                 'https//example.com/my_proof_link_2',
             ],
-            verified: 'True',
+            verified: True,
         }
     }
 )
@@ -214,7 +213,7 @@ requests.post(
     json = {
         authInfo: {
             identifier: 'my_id',
-            password: '12345678'
+            password: 'my_password'
         },
         deleteIdentifierInfo: {
             identfier: 'my_record_id'
@@ -232,6 +231,8 @@ requests.get(
     'https://script.google.com/macros/s/abc.../exec?method=getUsers',
     }
 )
+
+# return: userInfo[] (w/o mail or hashed password)
 ```
 
 ### get Records
@@ -241,4 +242,6 @@ requests.get(
     'https://script.google.com/macros/s/abc.../exec?method=getRecords',
     }
 )
+
+# return: recordInfo[]
 ```

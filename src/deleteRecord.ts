@@ -94,7 +94,7 @@ function deleteRecord(data: DeleteRecordData): PostStatusResponder {
         throw new Error("The run has been not found.")
 
     } catch (error) {
-        Logger.log(error)
+        console.log(error)
         const result: PostStatusResponder = {
             status: STATUS_ERROR,
             message: error.message,
@@ -136,6 +136,6 @@ function deleteRecordExample(): void {
     };
     const result2 = deleteRecord(data2);
 
-    Logger.log(result);
-    Logger.log(result2);
+    console.log(result);
+    console.log(result2);
 }

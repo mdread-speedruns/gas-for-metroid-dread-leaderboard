@@ -5,14 +5,14 @@ function addRecord(data: AddRecordData): PostStatusResponder {
         const recordinfo: RecordInfo = data.recordInfo;
         const authinfo: AuthInfo = data.authInfo;
 
-        const userId: string = recordinfo.userId;
-        const realTime: string = recordinfo.realTime;
-        const inGameTime: string = recordinfo.inGameTime;
-        const category: string = recordinfo.category;
-        const difficulty: string = recordinfo.difficulty;
-        const version: string = recordinfo.version;
-        const turbo: boolean = recordinfo.turbo;
-        const comment: string = recordinfo.comment;
+        const userId: string = String(recordinfo.userId);
+        const realTime: number = Number(recordinfo.realTime);
+        const inGameTime: number = Number(recordinfo.inGameTime);
+        const category: string = String(recordinfo.category);
+        const difficulty: string = String(recordinfo.difficulty);
+        const version: string = String(recordinfo.version);
+        const turbo: boolean = Boolean(recordinfo.turbo);
+        const comment: string = String(recordinfo.comment);
         const proofLinks: string[] = recordinfo.proofLinks;
 
         // 適正ユーザーかどうかを確かめる
@@ -153,13 +153,12 @@ function addRecordExample(): void {
         },
         "recordInfo": {
             "userId": "agdf_ydy",
-            "realTime": "00:00:00",
-            "inGameTime": "00:00:00",
+            "realTime": 1234.5,
+            "inGameTime": 1254.3,
             "category": "Any",
             "difficulty": "Normal",
             "version": "1.0.0",
             "turbo": false,
-            "submissionDate": "2020-01-01",
             "comment": "my_comment",
             "proofLinks": [
                 "https//example.com/my_proof_link_1",

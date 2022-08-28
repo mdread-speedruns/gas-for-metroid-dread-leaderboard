@@ -9,9 +9,8 @@ function deleteUser(data: DeleteUserData): PostStatusResponder {
 
         // 適正ユーザーかどうかを確かめる
         const [isProperUser, userInfo] = authUser(authinfo, header, table);
-        if (!isProperUser) {
+        if (!isProperUser) 
             throw new Error("unproper infomation: is ID or Password correct?");
-        }
 
         // メアドか個人のID
         // どちらかを判定して、認証情報と異なるならばエラー
@@ -42,7 +41,7 @@ function deleteUser(data: DeleteUserData): PostStatusResponder {
 
         const result: PostStatusResponder = {
             status: STATUS_SUCCESS,
-            message: 'The run has been deleted successfully.',
+            message: 'The run has been deleted successfully. Also deleted runs count is ' + _result[1],
             data: {
                 userInfo: {
                     id: table[rowIndexOfId][SHEET_USER_ID_LABEL_INDEX],
@@ -57,7 +56,7 @@ function deleteUser(data: DeleteUserData): PostStatusResponder {
         return result;
 
     } catch (error) {
-        Logger.log(error)
+        console.log(error)
         const result: PostStatusResponder = {
             status: STATUS_ERROR,
             message: error.message,
@@ -83,26 +82,21 @@ function deleteRecordsBelongsToUser(userId: string): [boolean, number] {
             const rowsOfRecord = table.filter(row => row[SHEET_RECORD_RUNNER_ID_LABEL_INDEX] !== userId);
 
             // 記録が見つからなかった場合
-            if (rowsOfRecord.length === table.length) {
+            if (rowsOfRecord.length === table.length) 
                 continue;
-            }
 
             // 空白行埋め
-            for (let i = rowsOfRecord.length; i < table.length; i++) {
+            for (let i = rowsOfRecord.length; i < table.length; i++) 
                 rowsOfRecord.push(Array(header.length))
 
-            }
-
             // 続いて記録動画の削除
-            // …でも参照されないからアーカイブ的に残してあってもいいんじゃない？
-
             return [true, table.length - rowsOfRecord.length];
         }
 
         throw new Error("The run has been not found.")
 
     } catch (error) {
-        Logger.log(error)
+        console.log(error)
         return [false, 0];
     }
 }
@@ -131,7 +125,7 @@ function deleteUserExample(): void {
     };
     const result2 = deleteRecord(data2);
 
-    Logger.log(result);
-    Logger.log(result2);
+    console.log(result);
+    console.log(result2);
 }
 

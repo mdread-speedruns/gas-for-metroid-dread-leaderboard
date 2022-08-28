@@ -3,16 +3,15 @@ function addUser(data: AddUserData): PostStatusResponder {
     try {
         const userinfo: UserInfo = data.userInfo;
 
-        const id: string = userinfo.id;
-        const name: string = userinfo.name;
-        const nameJp: string = userinfo.nameJp;
-        const mail: string = userinfo.mail;
-        const password: string = userinfo.password;
+        const id: string = String(userinfo.id);
+        const name: string = String(userinfo.name);
+        const nameJp: string = String(userinfo.nameJp);
+        const mail: string = String(userinfo.mail);
+        const password: string = String(userinfo.password);
 
         // パスワードが要件を満たさない場合、エラーを返す
-        if (!testPassword(password)) {
+        if (!testPassword(password)) 
             throw new Error("Invalid Password: contains at least one lowercase one-byte alphabet and one-byte number");
-        }
 
         const passwordHashed: string = convertDataToSha256Hash(password, PASSWORD_STRETCHING_TIMES, id);
 
@@ -42,37 +41,31 @@ function addUser(data: AddUserData): PostStatusResponder {
         // condition flags
         const indexOfOldInfoRow = table.findIndex(row => row[SHEET_USER_MAIL_LABEL_INDEX] === mail);
 
-        // 同一のメアド所持者がいるか確認
-        // メアドが登録されていない場合は新規登録であり、ID重複は不可
+        // 登録可能かどうかのチェック
+        // まずは同一のメアド所持者がいるか確認
+        // メアドが登録されていない場合は新規登録であり、他人とのID重複は不可
         // IDはそのメアド所持者で未承認である限り更新可能
         if (indexOfOldInfoRow !== -1) {
             // 既にそのメアドで何らかの情報が登録済みである
-
             // 登録情報を抜き出す
             const oldInfoRow = table[indexOfOldInfoRow];
 
-            // 承認済ならばエラー（また別にアカウントを停止させるメソッドを用意する）
-            const isVerified: boolean = oldInfoRow[SHEET_USER_VERIFIED_LABEL_INDEX];
+            // 承認済ならばエラー（また別にアカウントを停止させるメソッドを呼び出す必要がある）
+            const isVerified: boolean = Boolean(oldInfoRow[SHEET_USER_VERIFIED_LABEL_INDEX]);
             if (isVerified) 
-                throw new Error("you have already verified. for changing your id, you need to post by other method");
-            
-            // 要求するIDが他のアカウントで使用済みならエラー
-            // 誰かにそのIDが使われているかを取得
-            const indexOfTheIDUsedBySomeone = table.findIndex(row => row[SHEET_USER_ID_LABEL_INDEX] === id);
-            const isTheIdUsedBySomeone = indexOfTheIDUsedBySomeone !== -1;
-
-            // そのIDを自分以外が使用しているならば、登録させない
-            if (isTheIdUsedBySomeone) 
-                throw new Error("the ID already exists");
-        }
-        else {
-            // 新規登録
-            // 単に他のIDで登録済みならアウト
-            const indexOfTheIDUsedBySomeone = table.findIndex(row => row[SHEET_USER_ID_LABEL_INDEX] === id);
-            if (indexOfTheIDUsedBySomeone !== -1) 
-                throw new Error("the ID already exists");
+                throw new Error("you have already verified. for changing your id, you need to post by other method");   
         }
 
+        // 要求するIDが他のアカウントで使用済みならエラー
+        // 誰かにそのIDが使われているかを取得
+        const indexOfTheIDUsedBySomeone = table.findIndex(row => row[SHEET_USER_ID_LABEL_INDEX] === id);
+        const isTheIdUsedBySomeone = indexOfTheIDUsedBySomeone !== -1;
+
+        // そのIDを自分以外が使用しているならば、登録させない
+        if (isTheIdUsedBySomeone) 
+            throw new Error("the ID already exists");
+
+        
         // 登録チェックが終わったので、登録処理をしていく
         const newRow = [];
         for (const label of header) {
@@ -124,7 +117,7 @@ function addUser(data: AddUserData): PostStatusResponder {
         MailApp.sendEmail(
             mail,
             MAIL_TITLE_FOR_USER_VERIFYING,
-            "",
+            EMPTY_STRING,
             {
                 name: "Metroid Dread Leaderboard Team",
                 htmlBody: mailBody,

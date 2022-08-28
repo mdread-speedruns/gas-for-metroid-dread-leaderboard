@@ -57,6 +57,8 @@ const GET_METHODS = {
 const STATUS_SUCCESS = "Success"
 const STATUS_ERROR = "Error"
 
+const EMPTY_STRING: string = "";
+
 // メールアドレスの正規表現
 const MAILADDRESS_REGEX = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 // パスワードの条件用正規表現
@@ -115,8 +117,8 @@ type DeleteIdentifierInfo = {
 
 type RecordInfo = {
     userId: string,
-    realTime: string,
-    inGameTime: string,
+    realTime: number,   // sec base
+    inGameTime: number,
     category: string,
     difficulty: string,
     version: string,

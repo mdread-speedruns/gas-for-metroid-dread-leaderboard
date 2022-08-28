@@ -44,23 +44,23 @@ function getRecords(data: DoGetParams): GetStatusResponder {
 
             // 各レコードについて処理
             for (const record of table) {
-                const recordId = record[SHEET_RECORD_ID_LABEL_INDEX];
+                const recordId: string = String(record[SHEET_RECORD_ID_LABEL_INDEX]);
 
                 // ビデオのURLを取得
                 const rowsOfProofLinks = tableProof.filter(row => row[SHEET_PROOF_LINK_RECORD_ID_LABEL_INDEX] === recordId);
-                const links: string[] = rowsOfProofLinks.map(row => row[SHEET_PROOF_LINK_URL_LABEL_INDEX])
+                const links: string[] = rowsOfProofLinks.map(row => String(row[SHEET_PROOF_LINK_URL_LABEL_INDEX]))
 
                 recordsInfo.push({
                     id: recordId,
-                    userId: record[SHEET_RECORD_USER_ID_LABEL_INDEX],
-                    realTime: record[SHEET_RECORD_REAL_TIME_LABEL_INDEX],
-                    inGameTime: record[SHEET_RECORD_IN_GAME_TIME_LABEL_INDEX],
-                    category: record[SHEET_RECORD_CATEGORY_LABEL_INDEX],
-                    difficulty: record[SHEET_RECORD_DIFFICULTY_LABEL_INDEX],
-                    version: record[SHEET_RECORD_VERSION_LABEL_INDEX],
-                    turbo: record[SHEET_RECORD_TURBO_LABEL_INDEX],
-                    submissionDate: record[SHEET_RECORD_SUBMISSION_DATE_LABEL_INDEX],
-                    comment: record[SHEET_RECORD_COMMENT_LABEL_INDEX],
+                    userId: String(record[SHEET_RECORD_USER_ID_LABEL_INDEX]),
+                    realTime: Number(record[SHEET_RECORD_REAL_TIME_LABEL_INDEX]),
+                    inGameTime: Number(record[SHEET_RECORD_IN_GAME_TIME_LABEL_INDEX]),
+                    category: String(record[SHEET_RECORD_CATEGORY_LABEL_INDEX]),
+                    difficulty: String(record[SHEET_RECORD_DIFFICULTY_LABEL_INDEX]),
+                    version: String(record[SHEET_RECORD_VERSION_LABEL_INDEX]),
+                    turbo: Boolean(record[SHEET_RECORD_TURBO_LABEL_INDEX]),
+                    submissionDate: String(record[SHEET_RECORD_SUBMISSION_DATE_LABEL_INDEX]),
+                    comment: String(record[SHEET_RECORD_COMMENT_LABEL_INDEX]),
                     proofLinks: links,
                     verified: sheetId === SHEET_ID_RECORD
                 })
